@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notes_application/screens/home_screen.dart';
 import 'package:notes_application/auth.dart';
+import 'package:notes_application/screens/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -11,7 +13,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String? errorMessage = "";
+  String errorMessage = "";
   bool isLogin = true;
 
   bool _passwordNotVisible = true;
@@ -28,10 +30,16 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text,
         password: _passwordController.text,
       );
+      Navigator.popUntil(context, ModalRoute.withName('name'));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     } on FirebaseAuthException catch (e) {
-      setState(() {
-        errorMessage = e.message;
-      });
+      errorMessage = e.message!;
+      Fluttertoast.showToast(
+        msg: errorMessage,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
     }
   }
 
@@ -40,10 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _changeButton = true;
       });
+      signInWithEmailAndPassword();
       await Future.delayed(const Duration(milliseconds: 500));
-      Navigator.popUntil(context, ModalRoute.withName('name'));
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 
@@ -185,7 +191,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       TextButton(
-                          onPressed: onPressed,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUpScreen()));
+                          },
                           child: Text(
                             "Don't have an account? Register here.",
                             style: TextStyle(fontWeight: FontWeight.bold),

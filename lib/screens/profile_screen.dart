@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_application/auth.dart';
 import 'package:notes_application/screens/login_screen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -9,6 +12,24 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String errorMessage = "";
+
+  Future<void> SignOut() async {
+    try {
+      await Auth().signOut();
+      Navigator.popUntil(context, ModalRoute.withName('/anything'));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    } on FirebaseAuthException catch (e) {
+      errorMessage = e.message!;
+      Fluttertoast.showToast(
+        msg: errorMessage,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,11 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               size: 250,
             ),
             InkWell(
-              onTap: () {
-                Navigator.popUntil(context, ModalRoute.withName('/anything'));
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
-              },
+              onTap: () => SignOut(),
               child: Container(
                 alignment: Alignment.center,
                 height: 40,
