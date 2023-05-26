@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_application/screens/home_screen.dart';
+import 'package:notes_application/auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -9,11 +11,29 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String? errorMessage = "";
+  bool isLogin = true;
+
   bool _passwordNotVisible = true;
 
   bool _changeButton = false;
 
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> signInWithEmailAndPassword() async {
+    try {
+      await Auth().signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+    }
+  }
 
   void moveToHome(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
@@ -67,6 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           hintText: "Enter user name",
                           labelText: "User name",
@@ -97,6 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: screenHeight / 87.7,
                       ),
                       TextFormField(
+                        controller: _passwordController,
                         obscureText: _passwordNotVisible,
                         decoration: InputDecoration(
                             hintText: "Enter password",
@@ -162,6 +184,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                         ),
                       ),
+                      TextButton(
+                          onPressed: onPressed,
+                          child: Text(
+                            "Don't have an account? Register here.",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))
                     ],
                   ),
                 ),
