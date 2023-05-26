@@ -14,7 +14,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   String errorMessage = "";
 
-  Future<void> SignOut() async {
+  Future<void> signOut() async {
     try {
       await Auth().signOut();
       Navigator.popUntil(context, ModalRoute.withName('/anything'));
@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               size: 250,
             ),
             InkWell(
-              onTap: () => SignOut(),
+              onTap: () => signOut(),
               child: Container(
                 alignment: Alignment.center,
                 height: 40,
