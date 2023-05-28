@@ -1,4 +1,4 @@
-# notes_application
+# Digital Rental
 
 A new Flutter project.
 

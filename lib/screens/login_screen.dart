@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:notes_application/screens/home_screen.dart';
+import 'package:notes_application/auth.dart';
+import 'package:notes_application/screens/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -9,21 +10,27 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String errorMessage = "";
+  bool isLogin = true;
+
   bool _passwordNotVisible = true;
 
   bool _changeButton = false;
 
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  void moveToHome(BuildContext context) async {
+  Future<void> signInWithEmailAndPassword(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _changeButton = true;
       });
+      await Auth().signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+          context: context);
       await Future.delayed(const Duration(milliseconds: 500));
-      Navigator.popUntil(context, ModalRoute.withName('name'));
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 
@@ -67,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           hintText: "Enter user name",
                           labelText: "User name",
@@ -97,6 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: screenHeight / 87.7,
                       ),
                       TextFormField(
+                        controller: _passwordController,
                         obscureText: _passwordNotVisible,
                         decoration: InputDecoration(
                             hintText: "Enter password",
@@ -133,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: screenHeight / 21.925,
                       ),
                       InkWell(
-                        onTap: () => moveToHome(context),
+                        onTap: () => signInWithEmailAndPassword(context),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 500),
                           height: screenHeight / 17.54,
@@ -162,6 +171,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                         ),
                       ),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUpScreen()));
+                          },
+                          child: Text(
+                            "Don't have an account? Register here.",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))
                     ],
                   ),
                 ),
