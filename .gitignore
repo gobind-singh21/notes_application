@@ -1,5 +1,5 @@
 # Miscellaneous
-.exe
+*.exe
 *.class
 *.log
 *.pyc
