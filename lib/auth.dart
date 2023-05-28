@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -25,15 +26,20 @@ class Auth {
       return null;
     }))
         .user;
-    final users = db.collection('users');
-    final userData = <String, dynamic>{
-      'id': firebaseUser!.uid,
-      'email': email,
-    };
-    users.doc(firebaseUser.uid).set(userData);
-    currentFirebaseUser = firebaseUser;
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    final docRef = db.collection('users').doc(firebaseUser!.uid);
+    docRef.get().then((DocumentSnapshot doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      if (data.isNotEmpty) {
+        Fluttertoast.showToast(msg: 'Login successful');
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      } else {
+        Fluttertoast.showToast(
+          msg: 'No record found',
+          toastLength: Toast.LENGTH_LONG,
+        );
+      }
+    });
   }
 
   Future<void> createUserWithEmailAndPassword(
