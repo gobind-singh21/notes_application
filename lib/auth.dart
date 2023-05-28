@@ -1,4 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notes_application/global/global.dart';
+import 'package:notes_application/screens/home_screen.dart';
 
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -8,22 +13,59 @@ class Auth {
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
   Future<void> signInWithEmailAndPassword(
-      {required String email, required String password}) async {
-    await _firebaseAuth.signInWithEmailAndPassword(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
+    final User? firebaseUser = (await _firebaseAuth
+            .signInWithEmailAndPassword(
       email: email,
       password: password,
-    );
+    )
+            .catchError((msg) {
+      Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_LONG);
+      return null;
+    }))
+        .user;
+    final users = db.collection('users');
+    final userData = <String, dynamic>{
+      'id': firebaseUser!.uid,
+      'email': email,
+    };
+    users.doc(firebaseUser.uid).set(userData);
+    currentFirebaseUser = firebaseUser;
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => HomeScreen()));
   }
 
   Future<void> createUserWithEmailAndPassword(
-      {required String email, required String password}) async {
-    await _firebaseAuth.createUserWithEmailAndPassword(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
+    final User? firebaseUser = (await _firebaseAuth
+            .createUserWithEmailAndPassword(
       email: email,
       password: password,
-    );
+    )
+            .catchError((msg) {
+      Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_LONG);
+      return null;
+    }))
+        .user;
+    Fluttertoast.showToast(msg: 'created');
+    final users = db.collection('users');
+    final userData = <String, dynamic>{
+      'id': firebaseUser!.uid,
+      'email': email,
+    };
+
+    users.doc(firebaseUser.uid).set(userData);
+    currentFirebaseUser = firebaseUser;
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => HomeScreen()));
   }
 
   Future<void> signOut() async {
+    currentFirebaseUser = null;
     await _firebaseAuth.signOut();
   }
 }

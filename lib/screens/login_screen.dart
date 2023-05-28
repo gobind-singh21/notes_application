@@ -1,7 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notes_application/screens/home_screen.dart';
 import 'package:notes_application/auth.dart';
 import 'package:notes_application/screens/signup_screen.dart';
 
@@ -24,31 +21,15 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> signInWithEmailAndPassword() async {
-    try {
-      await Auth().signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-      Navigator.popUntil(context, ModalRoute.withName('name'));
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
-    } on FirebaseAuthException catch (e) {
-      errorMessage = e.message!;
-      Fluttertoast.showToast(
-        msg: errorMessage,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-      );
-    }
-  }
-
-  void moveToHome(BuildContext context) async {
+  Future<void> signInWithEmailAndPassword(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _changeButton = true;
       });
-      signInWithEmailAndPassword();
+      await Auth().signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+          context: context);
       await Future.delayed(const Duration(milliseconds: 500));
     }
   }
@@ -161,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: screenHeight / 21.925,
                       ),
                       InkWell(
-                        onTap: () => moveToHome(context),
+                        onTap: () => signInWithEmailAndPassword(context),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 500),
                           height: screenHeight / 17.54,
