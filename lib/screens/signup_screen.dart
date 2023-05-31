@@ -6,6 +6,7 @@ import 'package:notes_application/app_widgets/text_widgets/heading_text.dart';
 import 'dart:io';
 import 'package:notes_application/utils/cropper.dart';
 import 'package:notes_application/utils/auth.dart';
+import 'package:notes_application/global/dimensions.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -66,9 +67,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Material(
       color: Colors.white,
       child: SingleChildScrollView(
@@ -76,22 +74,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
           key: _formKey,
           child: Column(
             children: [
-              // SizedBox(
-              //   height: screenHeight / 43.85,
-              // ),
-              // Image.asset(
-              //   "assets/images/login_image.png",
-              //   fit: BoxFit.cover,
-              //   height: screenHeight / 4,
-              // ),
               SizedBox(
-                height: screenHeight / 43.85,
+                height: Dimensions.screenHeight / 43.85,
               ),
-              HeadingText("Welcome", screenHeight / 29.233, null, Colors.black),
+              HeadingText("Welcome", Dimensions.screenHeight / 29.233, null,
+                  Colors.black),
               Padding(
                 padding: EdgeInsets.symmetric(
-                  vertical: screenHeight / 54.8125,
-                  horizontal: screenWidth / 12.84375,
+                  vertical: Dimensions.screenHeight / 54.8125,
+                  horizontal: Dimensions.screenWidth / 12.84375,
                 ),
                 child: Column(
                   children: [
@@ -103,13 +94,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         labelText: "User name",
                         prefixIcon: Icon(
                           Icons.person_outline,
-                          size: screenHeight / 29.2333,
+                          size: Dimensions.screenHeight / 29.2333,
                         ),
                         labelStyle: TextStyle(
-                          fontSize: screenHeight / 54.8125,
+                          fontSize: Dimensions.screenHeight / 54.8125,
                         ),
                         hintStyle: TextStyle(
-                          fontSize: screenHeight / 53,
+                          fontSize: Dimensions.screenHeight / 53,
                         ),
                       ),
                       validator: (value) {
@@ -120,7 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                     ),
                     SizedBox(
-                      height: screenHeight / 87.7,
+                      height: Dimensions.screenHeight / 87.7,
                     ),
                     TextFormField(
                       controller: _emailController,
@@ -130,10 +121,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         labelText: "Email",
                         prefixIcon: Icon(
                           Icons.mail_outline,
-                          size: screenHeight / 29.2333,
+                          size: Dimensions.screenHeight / 29.2333,
                         ),
                         labelStyle: TextStyle(
-                          fontSize: screenHeight / 54.8125,
+                          fontSize: Dimensions.screenHeight / 54.8125,
                         ),
                       ),
                       validator: (value) {
@@ -144,7 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                     ),
                     SizedBox(
-                      height: screenHeight / 87.7,
+                      height: Dimensions.screenHeight / 87.7,
                     ),
                     TextFormField(
                       controller: _numberController,
@@ -154,10 +145,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         labelText: "Phone Number",
                         prefixIcon: Icon(
                           Icons.phone_outlined,
-                          size: screenHeight / 29.2333,
+                          size: Dimensions.screenHeight / 29.2333,
                         ),
                         labelStyle: TextStyle(
-                          fontSize: screenHeight / 54.8125,
+                          fontSize: Dimensions.screenHeight / 54.8125,
                         ),
                       ),
                       validator: (value) {
@@ -170,7 +161,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                     ),
                     SizedBox(
-                      height: screenHeight / 87.7,
+                      height: Dimensions.screenHeight / 87.7,
                     ),
                     TextFormField(
                       controller: _passwordController,
@@ -180,10 +171,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           labelText: "Password",
                           prefixIcon: Icon(
                             Icons.lock_outline,
-                            size: screenHeight / 29.2333,
+                            size: Dimensions.screenHeight / 29.2333,
                           ),
                           labelStyle: TextStyle(
-                            fontSize: screenHeight / 54.8125,
+                            fontSize: Dimensions.screenHeight / 54.8125,
                           ),
                           suffixIcon: IconButton(
                               onPressed: () {
@@ -195,7 +186,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 _passwordNotVisible
                                     ? Icons.visibility_off
                                     : Icons.visibility,
-                                size: screenHeight / 40,
+                                size: Dimensions.screenHeight / 40,
                               ))),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -207,60 +198,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                     ),
                     SizedBox(
-                      height: screenHeight / 21.925,
+                      height: Dimensions.screenHeight / 21.925,
                     ),
                     InkWell(
                       onTap: () => selectFile(),
                       child: MyButton(
                         "Select file",
-                        screenHeight / 17.54,
-                        screenWidth / 2.74,
-                        screenWidth / 30,
+                        Dimensions.screenHeight / 17.54,
+                        Dimensions.screenWidth / 2.74,
+                        Dimensions.screenWidth / 30,
                       ),
-                      // child: Container(
-                      //   height: screenHeight / 17.54,
-                      //   width: screenWidth / 2.74,
-                      //   alignment: Alignment.center,
-                      //   decoration: BoxDecoration(
-                      //     color: Colors.blueAccent,
-                      //     borderRadius: BorderRadius.circular(screenWidth / 30),
-                      //   ),
-                      //   child: Text(
-                      //     "Select image",
-                      //     style: TextStyle(
-                      //         color: Colors.white,
-                      //         fontWeight: FontWeight.bold,
-                      //         fontSize: screenHeight / 45),
-                      //   ),
-                      // ),
                     ),
                     SizedBox(
-                      height: screenHeight / 40,
+                      height: Dimensions.screenHeight / 40,
                     ),
                     InkWell(
                       onTap: () => uploadFile(),
                       child: MyButton(
                         "Sign Up",
-                        screenHeight / 17.54,
-                        screenWidth / 2.74,
-                        screenWidth / 30,
+                        Dimensions.screenHeight / 17.54,
+                        Dimensions.screenWidth / 2.74,
+                        Dimensions.screenWidth / 30,
                       ),
-                      // child: Container(
-                      //   height: screenHeight / 17.54,
-                      //   width: screenWidth / 2.74,
-                      //   alignment: Alignment.center,
-                      //   decoration: BoxDecoration(
-                      //     color: Colors.blueAccent,
-                      //     borderRadius: BorderRadius.circular(screenWidth / 30),
-                      //   ),
-                      //   child: Text(
-                      //     "Sign Up",
-                      //     style: TextStyle(
-                      //         color: Colors.white,
-                      //         fontWeight: FontWeight.bold,
-                      //         fontSize: screenHeight / 45),
-                      //   ),
-                      // ),
                     ),
                   ],
                 ),

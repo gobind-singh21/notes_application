@@ -1,5 +1,6 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_application/global/dimensions.dart';
 import 'package:notes_application/models/product_class.dart';
 import 'package:notes_application/utils/dummy_data.dart';
 import 'package:notes_application/app_widgets/home_widgets/top_page.dart';
@@ -16,8 +17,8 @@ class _TopItemState extends State<TopItem> {
   final List<Product> _products = DummyData.products;
   // _TopItemState(this._products);
   PageController pageController = PageController(viewportFraction: 0.85);
-  late double imageHeight;
-  late double width;
+  double imageHeight = Dimensions.screenHeight / 3.2;
+  double width = Dimensions.screenWidth;
 
   var _currPageValue = 0.0;
   @override
@@ -38,8 +39,6 @@ class _TopItemState extends State<TopItem> {
 
   @override
   Widget build(BuildContext context) {
-    imageHeight = MediaQuery.of(context).size.height / 3.2;
-    width = MediaQuery.of(context).size.width;
     return Column(
       children: [
         Container(

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notes_application/app_widgets/home_widgets/front_page_item.dart';
-// import 'package:notes_application/utils/auth.dart';
 import 'package:notes_application/models/product_class.dart';
-// import 'package:notes_application/screens/login_screen.dart';
 import 'package:notes_application/screens/product_detail_screen.dart';
 import 'package:notes_application/app_widgets/home_widgets/list_item.dart';
 import 'package:notes_application/app_widgets/home_widgets/home_header.dart';
@@ -17,6 +15,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  double screenHeight = Dimensions.screenHeight;
+
   void moveToProductScreen(Product object) {
     Navigator.push(context,
         MaterialPageRoute(builder: ((context) => ProductScreen(object))));
@@ -24,8 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // double? screenHeight = MediaQuery.of(context).size.height;
-    // double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       // floatingActionButton: InkWell(
       //   onTap: () {
@@ -60,11 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     decoration: BoxDecoration(boxShadow: [
                       BoxShadow(
                         color: const Color.fromARGB(108, 93, 93, 93),
-                        offset: Offset(0, Dimensions.screenHeight / 296),
+                        offset: Offset(0, screenHeight / 296),
                         blurRadius: 4,
                       ),
                     ], color: Colors.white70),
-                    height: Dimensions.screenHeight / 2.95,
+                    height: screenHeight / 2.95,
                     child: TopItem(),
                   ),
                   ListView.builder(

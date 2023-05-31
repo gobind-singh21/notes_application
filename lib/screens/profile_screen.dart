@@ -17,7 +17,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   String errorMessage = "";
-  EndUser _user;
+  final EndUser _user;
   _ProfileScreenState(this._user);
 
   Future<void> signOut() async {
@@ -44,7 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               MaterialPageRoute(builder: (context) => EditProfileScreen()),
             ),
             child: ProfileItem(
-              Icon(Icons.person_outline),
+              const Icon(Icons.person_outline),
               'Account',
             ),
           ),
@@ -54,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               MaterialPageRoute(builder: (context) => SettingsScreen()),
             ),
             child: ProfileItem(
-              Icon(Icons.settings_outlined),
+              const Icon(Icons.settings_outlined),
               'Settings',
             ),
           ),
@@ -65,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => LoginScreen()));
             },
-            child: ProfileItem(Icon(Icons.logout_outlined), 'Log out'),
+            child: ProfileItem(const Icon(Icons.logout_outlined), 'Log out'),
           )
         ],
       ),

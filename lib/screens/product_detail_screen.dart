@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes_application/global/dimensions.dart';
 import 'package:notes_application/models/product_class.dart';
 import 'package:notes_application/app_widgets/unordered_list.dart';
 import 'package:notes_application/screens/search_screen.dart';
@@ -15,8 +16,8 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   PageController pageController = PageController(viewportFraction: 0.85);
-  late double imageHeight;
-  late double width;
+  double imageHeight = Dimensions.screenHeight / 3.25;
+  double width = Dimensions.screenWidth;
 
   var _currPageValue = 0.0;
   @override
@@ -41,8 +42,6 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    imageHeight = MediaQuery.of(context).size.height / 3.2465608466;
-    width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         elevation: 4,

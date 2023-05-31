@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes_application/global/dimensions.dart';
 import 'package:notes_application/models/user_class.dart';
 import 'package:notes_application/screens/profile_screen.dart';
 import 'package:notes_application/screens/search_screen.dart';
@@ -13,6 +14,9 @@ class HomeHeader extends StatefulWidget {
 }
 
 class _HomeHeaderState extends State<HomeHeader> {
+  double screenHeight = Dimensions.screenHeight;
+  double screenWidth = Dimensions.screenHeight;
+
   void moveToProfileScreen() {
     final docRef = db.collection('users').doc(currentFirebaseUser!.uid);
     docRef.get().then((DocumentSnapshot doc) {
@@ -31,8 +35,6 @@ class _HomeHeaderState extends State<HomeHeader> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
     return Container(
       height: screenHeight / 7.45,
       decoration: BoxDecoration(boxShadow: [

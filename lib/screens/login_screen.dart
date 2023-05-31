@@ -3,6 +3,7 @@ import 'package:notes_application/app_widgets/button.dart';
 import 'package:notes_application/app_widgets/text_widgets/heading_text.dart';
 import 'package:notes_application/utils/auth.dart';
 import 'package:notes_application/screens/signup_screen.dart';
+import 'package:notes_application/global/dimensions.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,10 +14,19 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _passwordNotVisible = true;
+  double screenHeight = Dimensions.screenHeight;
+  double screenWidth = Dimensions.screenWidth;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   Future<void> signInWithEmailAndPassword(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
@@ -30,9 +40,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Material(
         color: Colors.white,
         child: SingleChildScrollView(
@@ -40,14 +47,6 @@ class _LoginScreenState extends State<LoginScreen> {
             key: _formKey,
             child: Column(
               children: [
-                // SizedBox(
-                //   height: screenHeight / 43.85,
-                // ),
-                // Image.asset(
-                //   "assets/images/login_image.png",
-                //   fit: BoxFit.cover,
-                //   height: screenHeight / 4,
-                // ),
                 SizedBox(
                   height: screenHeight / 43.85,
                 ),
@@ -142,9 +141,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SignUpScreen()));
+                                    builder: (context) =>
+                                        const SignUpScreen()));
                           },
-                          child: Text(
+                          child: const Text(
                             "Don't have an account? Register here.",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ))

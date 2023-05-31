@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:notes_application/global/dimensions.dart';
 
 class ProfileItem extends StatelessWidget {
   final Icon _icon;
   final String _title;
-  const ProfileItem(this._icon, this._title);
+  ProfileItem(this._icon, this._title);
+
+  final double height = Dimensions.screenHeight;
+  final double width = Dimensions.screenWidth;
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
@@ -25,7 +27,7 @@ class ProfileItem extends StatelessWidget {
           ),
           Text(
             _title,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w500,
             ),
           ),

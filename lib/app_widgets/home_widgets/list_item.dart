@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:notes_application/app_widgets/text_widgets/heading_text.dart';
 import 'package:notes_application/app_widgets/text_widgets/normal_text.dart';
+import 'package:notes_application/global/dimensions.dart';
 import 'package:notes_application/models/product_class.dart';
 import 'package:notes_application/screens/product_detail_screen.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ListItem extends StatelessWidget {
   final Product _product;
-  const ListItem(this._product, {super.key});
+  ListItem(this._product, {super.key});
   // void moveToProductScreen() {
   //   Navigator.push(context,
   //       MaterialPageRoute(builder: ((context) => ProductScreen(_product))));
   // }
+  final double screenHeight = Dimensions.screenHeight;
+  final double screenWidth = Dimensions.screenWidth;
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: () {
         Navigator.push(context,
