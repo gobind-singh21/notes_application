@@ -17,7 +17,7 @@ class MyButton extends StatelessWidget {
         color: Colors.blueAccent,
         borderRadius: BorderRadius.circular(_borderRadius),
       ),
-      child: HeadingText(_buttonText, _height / 1.5, null, Colors.white),
+      child: HeadingText(_buttonText, _height / 2.5, null, Colors.white),
     );
   }
 }

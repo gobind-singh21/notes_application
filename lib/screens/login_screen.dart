@@ -48,13 +48,13 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 SizedBox(
-                  height: screenHeight / 43.85,
+                  height: screenHeight / 10,
                 ),
                 HeadingText(
-                  "Create your account",
+                  "Welcome",
                   screenHeight / 29.233,
                   null,
-                  Colors.white,
+                  Colors.black,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return "User name cannot be empty";
+                            return "Email cannot be empty";
                           }
                           return null;
                         },
@@ -135,6 +135,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           screenWidth / 2.74,
                           screenWidth / 30,
                         ),
+                      ),
+                      SizedBox(
+                        height: screenHeight / 87.7,
                       ),
                       TextButton(
                           onPressed: () {

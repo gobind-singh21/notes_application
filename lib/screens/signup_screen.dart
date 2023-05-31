@@ -28,6 +28,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
 
     pickedFile = await Cropper.cropSquareImage(File(result.files.first.path!));
+
+    Fluttertoast.showToast(
+      msg: 'File added successfully',
+      toastLength: Toast.LENGTH_LONG,
+    );
   }
 
   Future uploadFile() async {
@@ -75,10 +80,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             children: [
               SizedBox(
-                height: Dimensions.screenHeight / 43.85,
+                height: Dimensions.screenHeight / 11,
               ),
-              HeadingText("Welcome", Dimensions.screenHeight / 29.233, null,
-                  Colors.black),
+              HeadingText("Create your account",
+                  Dimensions.screenHeight / 29.23, null, Colors.black),
               Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: Dimensions.screenHeight / 54.8125,
@@ -88,6 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   children: [
                     TextFormField(
                       controller: _nameController,
+                      textCapitalization: TextCapitalization.words,
                       keyboardType: TextInputType.name,
                       decoration: InputDecoration(
                         hintText: "Enter user name",

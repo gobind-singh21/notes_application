@@ -36,7 +36,7 @@ class _HomeHeaderState extends State<HomeHeader> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: screenHeight / 7.45,
+      height: screenHeight / 8.5,
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: const Color.fromARGB(108, 93, 93, 93),
@@ -46,9 +46,9 @@ class _HomeHeaderState extends State<HomeHeader> {
       ], color: Colors.white),
       child: Padding(
         padding: EdgeInsets.only(
-            left: screenWidth / 30,
-            top: screenHeight / 15,
-            right: screenWidth / 30,
+            left: screenWidth / 45,
+            top: screenHeight / 23,
+            right: screenWidth / 45,
             bottom: screenHeight / 120),
         child: Row(
           children: [
@@ -59,7 +59,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                 width: screenHeight / 20,
                 decoration: BoxDecoration(
                   color: Colors.cyan,
-                  borderRadius: BorderRadius.circular(screenWidth / 60),
+                  borderRadius: BorderRadius.circular(screenWidth / 80),
                 ),
                 child: Icon(
                   Icons.person,
@@ -71,8 +71,8 @@ class _HomeHeaderState extends State<HomeHeader> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(
-                  left: screenWidth / 36,
-                  right: screenWidth / 36,
+                  left: screenWidth / 45,
+                  right: screenWidth / 45,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +113,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                 width: screenHeight / 20,
                 decoration: BoxDecoration(
                   color: Colors.cyan,
-                  borderRadius: BorderRadius.circular(screenWidth / 60),
+                  borderRadius: BorderRadius.circular(screenWidth / 80),
                 ),
                 child: Icon(
                   Icons.search,

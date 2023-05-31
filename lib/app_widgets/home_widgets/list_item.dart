@@ -101,7 +101,7 @@ class ListItem extends StatelessWidget {
                             ":${_product.getRating()} (${_product.getNumberOfReviews()}) Reviews",
                             13,
                             null,
-                            Colors.black,
+                            Colors.grey,
                           ),
                         ],
                       ),
