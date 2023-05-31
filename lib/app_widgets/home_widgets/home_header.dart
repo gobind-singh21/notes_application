@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes_application/global/dimensions.dart';
 import 'package:notes_application/models/user_class.dart';
 import 'package:notes_application/screens/profile_screen.dart';
 import 'package:notes_application/screens/search_screen.dart';
@@ -13,12 +14,29 @@ class HomeHeader extends StatefulWidget {
 }
 
 class _HomeHeaderState extends State<HomeHeader> {
+  double screenHeight = Dimensions.screenHeight;
+  double screenWidth = Dimensions.screenHeight;
+
+  void moveToProfileScreen() {
+    final docRef = db.collection('users').doc(currentFirebaseUser!.uid);
+    docRef.get().then((DocumentSnapshot doc) {
+      final userData = doc.data() as Map<String, dynamic>;
+      EndUser user = EndUser(
+        userData['name'],
+        userData['email'],
+        userData['number'],
+        userData['profileImageURL'],
+        userData['history'],
+      );
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => ProfileScreen(user)));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      height: screenHeight / 7.45,
+      height: screenHeight / 8.5,
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: const Color.fromARGB(108, 93, 93, 93),
@@ -28,40 +46,20 @@ class _HomeHeaderState extends State<HomeHeader> {
       ], color: Colors.white),
       child: Padding(
         padding: EdgeInsets.only(
-            left: screenWidth / 30,
-            top: screenHeight / 15,
-            right: screenWidth / 30,
+            left: screenWidth / 45,
+            top: screenHeight / 23,
+            right: screenWidth / 45,
             bottom: screenHeight / 120),
         child: Row(
           children: [
             InkWell(
-              onTap: () {
-                final docRef =
-                    db.collection('users').doc(currentFirebaseUser!.uid);
-                docRef.get().then((DocumentSnapshot doc) {
-                  final userData = doc.data() as Map<String, dynamic>;
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProfileScreen(EndUser(
-                                userData['name'],
-                                userData['email'],
-                                userData['number'],
-                                userData['profileImageURL'],
-                                userData['history'],
-                              ))));
-                });
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => ProfileScreen(user)));
-              },
+              onTap: () => moveToProfileScreen(),
               child: Container(
                 height: screenHeight / 20,
                 width: screenHeight / 20,
                 decoration: BoxDecoration(
                   color: Colors.cyan,
-                  borderRadius: BorderRadius.circular(screenWidth / 60),
+                  borderRadius: BorderRadius.circular(screenWidth / 80),
                 ),
                 child: Icon(
                   Icons.person,
@@ -73,8 +71,8 @@ class _HomeHeaderState extends State<HomeHeader> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(
-                  left: screenWidth / 36,
-                  right: screenWidth / 36,
+                  left: screenWidth / 45,
+                  right: screenWidth / 45,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -115,7 +113,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                 width: screenHeight / 20,
                 decoration: BoxDecoration(
                   color: Colors.cyan,
-                  borderRadius: BorderRadius.circular(screenWidth / 60),
+                  borderRadius: BorderRadius.circular(screenWidth / 80),
                 ),
                 child: Icon(
                   Icons.search,

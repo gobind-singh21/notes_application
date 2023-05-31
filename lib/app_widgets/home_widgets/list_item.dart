@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:notes_application/app_widgets/text_widgets/heading_text.dart';
+import 'package:notes_application/app_widgets/text_widgets/normal_text.dart';
+import 'package:notes_application/global/dimensions.dart';
 import 'package:notes_application/models/product_class.dart';
 import 'package:notes_application/screens/product_detail_screen.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class ListItem extends StatefulWidget {
+class ListItem extends StatelessWidget {
   final Product _product;
-  const ListItem(this._product, {super.key});
-
-  @override
-  State<ListItem> createState() {
-    return _ListItemState(_product);
-  }
-}
-
-class _ListItemState extends State<ListItem> {
-  final Product _product;
-  _ListItemState(this._product);
-
-  void moveToProductScreen() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: ((context) => ProductScreen(_product))));
-  }
+  ListItem(this._product, {super.key});
+  // void moveToProductScreen() {
+  //   Navigator.push(context,
+  //       MaterialPageRoute(builder: ((context) => ProductScreen(_product))));
+  // }
+  final double screenHeight = Dimensions.screenHeight;
+  final double screenWidth = Dimensions.screenWidth;
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
     return InkWell(
-      onTap: () => moveToProductScreen(),
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ProductScreen(_product)));
+      },
       child: Container(
         margin: const EdgeInsets.only(bottom: 10, top: 10, left: 15, right: 15),
         child: Row(
@@ -78,14 +73,8 @@ class _ListItemState extends State<ListItem> {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            _product.getTitle(),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          HeadingText(_product.getTitle(), 15,
+                              TextOverflow.ellipsis, Colors.black),
                           SizedBox(
                             width: 4,
                           ),
@@ -108,11 +97,11 @@ class _ListItemState extends State<ListItem> {
                             itemSize: screenWidth / 27.4,
                             direction: Axis.horizontal,
                           ),
-                          Text(
+                          NormalText(
                             ":${_product.getRating()} (${_product.getNumberOfReviews()}) Reviews",
-                            style: const TextStyle(
-                              fontSize: 13,
-                            ),
+                            13,
+                            null,
+                            Colors.grey,
                           ),
                         ],
                       ),
@@ -126,4 +115,20 @@ class _ListItemState extends State<ListItem> {
       ),
     );
   }
+  // State<ListItem> createState() {
+  //   return _ListItemState(_product);
+  // }
 }
+
+// class _ListItemState extends State<ListItem> {
+//   final Product _product;
+//   _ListItemState(this._product);
+
+//   void moveToProductScreen() {
+//     Navigator.push(context,
+//         MaterialPageRoute(builder: ((context) => ProductScreen(_product))));
+//   }
+
+//   @override
+  
+// }

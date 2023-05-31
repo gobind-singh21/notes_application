@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:notes_application/app_widgets/home_widgets/front_page_item.dart';
-import 'package:notes_application/utils/auth.dart';
 import 'package:notes_application/models/product_class.dart';
-import 'package:notes_application/screens/login_screen.dart';
 import 'package:notes_application/screens/product_detail_screen.dart';
 import 'package:notes_application/app_widgets/home_widgets/list_item.dart';
 import 'package:notes_application/app_widgets/home_widgets/home_header.dart';
+import 'package:notes_application/screens/login_screen.dart';
 import 'package:notes_application/utils/dummy_data.dart';
+import 'package:notes_application/utils/auth.dart';
+import 'package:notes_application/global/dimensions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +17,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  double screenHeight = Dimensions.screenHeight;
+
   void moveToProductScreen(Product object) {
     Navigator.push(context,
         MaterialPageRoute(builder: ((context) => ProductScreen(object))));
@@ -23,8 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double? screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       floatingActionButton: InkWell(
         onTap: () {
@@ -34,15 +35,16 @@ class _HomeScreenState extends State<HomeScreen> {
               context, MaterialPageRoute(builder: (context) => LoginScreen()));
         },
         child: Container(
-          height: screenHeight / 15.17,
-          width: screenHeight / 15.17,
+          height: Dimensions.screenHeight / 15.17,
+          width: Dimensions.screenHeight / 15.17,
           decoration: BoxDecoration(
             color: Colors.cyan,
-            borderRadius: BorderRadius.circular(screenHeight / 11.17),
+            borderRadius:
+                BorderRadius.circular(Dimensions.screenHeight / 11.17),
           ),
           child: Icon(
             Icons.history,
-            size: screenWidth / 15,
+            size: Dimensions.screenWidth / 15,
           ),
         ),
       ),
@@ -63,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ], color: Colors.white70),
                     height: screenHeight / 2.95,
-                    child: TopItem(DummyData.products),
+                    child: TopItem(),
                   ),
                   ListView.builder(
                     shrinkWrap: true,

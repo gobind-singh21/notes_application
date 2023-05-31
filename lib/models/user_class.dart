@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class EndUser {
   final String _name;
   // final int _age;
@@ -21,10 +19,6 @@ class EndUser {
     return _name;
   }
 
-  // int getAge() {
-  //   return _age;
-  // }
-
   String getEmail() {
     return _email;
   }
@@ -35,6 +29,10 @@ class EndUser {
 
   String getProfileImage() {
     return _profileImageUrl;
+  }
+
+  List<Borrowed>? getHistory() {
+    return _history;
   }
 }
 
