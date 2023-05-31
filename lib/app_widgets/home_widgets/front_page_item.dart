@@ -1,25 +1,27 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_application/app_widgets/text_widgets/heading_text.dart';
 import 'package:notes_application/screens/product_detail_screen.dart';
 import 'package:notes_application/models/product_class.dart';
+import 'package:notes_application/utils/dummy_data.dart';
 
 class TopItem extends StatefulWidget {
-  final List<Product> _products;
-  const TopItem(this._products, {super.key});
+  // final List<Product> _products;
+  const TopItem({super.key});
 
   @override
-  State<TopItem> createState() => _TopItemState(_products);
+  State<TopItem> createState() => _TopItemState();
 }
 
 class _TopItemState extends State<TopItem> {
-  final List<Product> _products;
-  _TopItemState(this._products);
+  final List<Product> _products = DummyData.products;
+  // _TopItemState(this._products);
   PageController pageController = PageController(viewportFraction: 0.85);
   late double imageHeight;
   late double width;
 
   var _currPageValue = 0.0;
-  final double _scaleFactor = 0.8;
+  // final double _scaleFactor = 0.8;
   @override
   void initState() {
     super.initState();
@@ -39,29 +41,29 @@ class _TopItemState extends State<TopItem> {
   Widget buildPageItem(int index) {
     imageHeight = MediaQuery.of(context).size.height / 3.2465608466;
     width = MediaQuery.of(context).size.width;
-    Matrix4 matrix = Matrix4.identity();
-    if (index == _currPageValue.floor()) {
-      var currScale = 1 - (_currPageValue - index) * (1 - _scaleFactor);
-      var currTrans = imageHeight * (1 - currScale) / 2;
-      matrix = Matrix4.diagonal3Values(1, currScale, 1)
-        ..setTranslationRaw(0, currTrans, 0);
-    } else if (index == _currPageValue.floor() + 1) {
-      var currScale =
-          _scaleFactor + (_currPageValue - index + 1) * (1 - _scaleFactor);
-      var currTrans = imageHeight * (1 - currScale) / 2;
-      matrix = Matrix4.diagonal3Values(1, currScale, 1);
-      matrix = Matrix4.diagonal3Values(1, currScale, 1)
-        ..setTranslationRaw(0, currTrans, 0);
-    } else if (index == _currPageValue.floor() - 1) {
-      var currScale = 1 - (_currPageValue - index) * (1 - _scaleFactor);
-      var currTrans = imageHeight * (1 - currScale) / 2;
-      matrix = Matrix4.diagonal3Values(1, currScale, 1)
-        ..setTranslationRaw(0, currTrans, 0);
-    } else {
-      var currScale = 0.8;
-      matrix = Matrix4.diagonal3Values(1, currScale, 1)
-        ..setTranslationRaw(0, imageHeight * (1 - currScale) / 2, 0);
-    }
+    // Matrix4 matrix = Matrix4.identity();
+    // if (index == _currPageValue.floor()) {
+    //   var currScale = 1 - (_currPageValue - index) * (1 - _scaleFactor);
+    //   var currTrans = imageHeight * (1 - currScale) / 2;
+    //   matrix = Matrix4.diagonal3Values(1, currScale, 1)
+    //     ..setTranslationRaw(0, currTrans, 0);
+    // } else if (index == _currPageValue.floor() + 1) {
+    //   var currScale =
+    //       _scaleFactor + (_currPageValue - index + 1) * (1 - _scaleFactor);
+    //   var currTrans = imageHeight * (1 - currScale) / 2;
+    //   matrix = Matrix4.diagonal3Values(1, currScale, 1);
+    //   matrix = Matrix4.diagonal3Values(1, currScale, 1)
+    //     ..setTranslationRaw(0, currTrans, 0);
+    // } else if (index == _currPageValue.floor() - 1) {
+    //   var currScale = 1 - (_currPageValue - index) * (1 - _scaleFactor);
+    //   var currTrans = imageHeight * (1 - currScale) / 2;
+    //   matrix = Matrix4.diagonal3Values(1, currScale, 1)
+    //     ..setTranslationRaw(0, currTrans, 0);
+    // } else {
+    //   var currScale = 0.8;
+    //   matrix = Matrix4.diagonal3Values(1, currScale, 1)
+    //     ..setTranslationRaw(0, imageHeight * (1 - currScale) / 2, 0);
+    // }
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -69,67 +71,64 @@ class _TopItemState extends State<TopItem> {
             MaterialPageRoute(
                 builder: (context) => ProductScreen(_products[index])));
       },
-      child: Transform(
-        transform: matrix,
-        child: Padding(
-            padding: EdgeInsets.only(left: width / 205.5, right: width / 205.5),
-            child: Stack(
-              alignment: AlignmentDirectional.topCenter,
-              children: [
-                Container(
-                  height: imageHeight / 1.25,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color.fromARGB(108, 93, 93, 93),
-                        offset: Offset(1, 5),
-                        blurRadius: 4,
-                      )
-                    ],
-                    color: Colors.white,
-                    image: DecorationImage(
-                      image: _products[index].getIcon(),
-                    ),
+      // child: Transform(
+      // transform: matrix,
+      child: Padding(
+          padding: EdgeInsets.only(left: width / 205.5, right: width / 205.5),
+          child: Stack(
+            alignment: AlignmentDirectional.topCenter,
+            children: [
+              Container(
+                height: imageHeight / 1.25,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromARGB(108, 93, 93, 93),
+                      offset: Offset(1, 5),
+                      blurRadius: 4,
+                    )
+                  ],
+                  color: Colors.white,
+                  image: DecorationImage(
+                    image: _products[index].getIcon(),
                   ),
                 ),
-                Column(
-                  children: [
-                    SizedBox(
-                      height: imageHeight / 1.5,
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    height: imageHeight / 1.5,
+                  ),
+                  Container(
+                    height: imageHeight / 4,
+                    width: width / 2.2,
+                    decoration: BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromARGB(108, 93, 93, 93),
+                          offset: Offset(1, 5),
+                          blurRadius: 4,
+                        )
+                      ],
+                      borderRadius: BorderRadius.circular(15),
+                      color: const Color.fromARGB(255, 215, 215, 215),
                     ),
-                    Container(
-                      height: imageHeight / 4,
-                      width: width / 2.2,
-                      decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color.fromARGB(108, 93, 93, 93),
-                            offset: Offset(1, 5),
-                            blurRadius: 4,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(15),
-                        color: const Color.fromARGB(255, 215, 215, 215),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
+                    child: Column(
+                      children: [
+                        HeadingText(
                             _products[index].getTitle(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: imageHeight / 20,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )
-                        ],
-                      ),
+                            imageHeight / 20,
+                            TextOverflow.ellipsis,
+                            Colors.black),
+                      ],
                     ),
-                  ],
-                ),
-              ],
-            )),
-      ),
+                  ),
+                ],
+              ),
+            ],
+          )),
+      // ),
     );
   }
 

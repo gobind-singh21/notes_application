@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ], color: Colors.white70),
                     height: screenHeight / 2.95,
-                    child: TopItem(DummyData.products),
+                    child: TopItem(),
                   ),
                   ListView.builder(
                     shrinkWrap: true,

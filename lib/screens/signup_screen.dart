@@ -1,12 +1,11 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notes_application/app_widgets/button.dart';
+import 'package:notes_application/app_widgets/text_widgets/heading_text.dart';
+import 'dart:io';
+import 'package:notes_application/utils/cropper.dart';
 import 'package:notes_application/utils/auth.dart';
-import 'package:notes_application/global/global.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:notes_application/screens/home_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -21,7 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   bool _passwordNotVisible = true;
 
-  PlatformFile? pickedFile;
+  File? pickedFile;
   String? urlDownload;
 
   Future selectFile() async {
@@ -30,44 +29,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return;
     }
 
-    pickedFile = result.files.first;
+    pickedFile = await Cropper.cropSquareImage(File(result.files.first.path!));
   }
 
   Future uploadFile() async {
-    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-    final User? firebaseUser = (await _firebaseAuth
-            .createUserWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    )
-            .catchError((msg) {
-      Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_LONG);
-      return null;
-    }))
-        .user;
-    currentFirebaseUser = fAuth.currentUser;
-    final path = 'users/${currentFirebaseUser!.uid}/profile_images/profile.jpg';
-    final file = File(pickedFile!.path!);
-
-    final ref = FirebaseStorage.instance.ref().child(path);
-    UploadTask uploadTask = ref.putFile(file);
-
-    final snapShot = await uploadTask.whenComplete(() {});
-    final urlDownload = await snapShot.ref.getDownloadURL();
-    Fluttertoast.showToast(msg: 'created');
-    final users = db.collection('users');
-    final userData = <String, dynamic>{
-      'id': firebaseUser!.uid,
-      'email': _emailController.text.trim(),
-      'name': _nameController.text.trim(),
-      'number': _numberController.text.trim(),
-      'profileImageURL': urlDownload
-    };
-
-    users.doc(firebaseUser.uid).set(userData);
-    currentFirebaseUser = firebaseUser;
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    if (pickedFile == null) {
+      Fluttertoast.showToast(
+        msg: 'Please select a profile picture',
+        toastLength: Toast.LENGTH_LONG,
+      );
+      return;
+    }
+    if (_formKey.currentState!.validate()) {
+      await Auth().createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+        name: _nameController.text.trim(),
+        number: _numberController.text.trim(),
+        pickedFile: pickedFile,
+        context: context,
+      );
+    }
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -76,31 +58,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
 
-  // Future<void> createUserWithEmail(BuildContext context) async {
-  //   if (_formKey.currentState!.validate()) {
-  //     if (pickedFile == null) {
-  //       Fluttertoast.showToast(
-  //         msg: 'Select a profile picture to proceed',
-  //         toastLength: Toast.LENGTH_LONG,
-  //       );
-  //       return;
-  //     }
-  //     uploadFile();
-  //     await Auth().createUserWithEmailAndPassword(
-  //         email: _emailController.text.trim(),
-  //         password: _passwordController.text.trim(),
-  //         name: _nameController.text.trim(),
-  //         number: _numberController.text.trim(),
-  //         urlDownload: urlDownload,
-  //         context: context);
-  //     await Future.delayed(const Duration(milliseconds: 500));
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
-    String name = "";
-
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -111,24 +70,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
           key: _formKey,
           child: Column(
             children: [
+              // SizedBox(
+              //   height: screenHeight / 43.85,
+              // ),
+              // Image.asset(
+              //   "assets/images/login_image.png",
+              //   fit: BoxFit.cover,
+              //   height: screenHeight / 4,
+              // ),
               SizedBox(
                 height: screenHeight / 43.85,
               ),
-              Image.asset(
-                "assets/images/login_image.png",
-                fit: BoxFit.cover,
-                height: screenHeight / 4,
-              ),
-              SizedBox(
-                height: screenHeight / 43.85,
-              ),
-              Text(
-                "Welcome $name",
-                style: TextStyle(
-                  fontSize: screenHeight / 29.233,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              HeadingText("Welcome", screenHeight / 29.233, null, Colors.black),
               Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: screenHeight / 54.8125,
@@ -158,11 +111,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           return "User name cannot be empty";
                         }
                         return null;
-                      },
-                      onChanged: (value) {
-                        name = value;
-                        setState(() {});
-                        // build(context);
                       },
                     ),
                     SizedBox(
@@ -257,44 +205,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     InkWell(
                       onTap: () => selectFile(),
-                      child: Container(
-                        height: screenHeight / 17.54,
-                        width: screenWidth / 2.74,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          borderRadius: BorderRadius.circular(screenWidth / 30),
-                        ),
-                        child: Text(
-                          "Select image",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: screenHeight / 45),
-                        ),
+                      child: MyButton(
+                        "Sign Up",
+                        screenHeight / 17.54,
+                        screenWidth / 2.74,
+                        screenWidth / 30,
                       ),
+                      // child: Container(
+                      //   height: screenHeight / 17.54,
+                      //   width: screenWidth / 2.74,
+                      //   alignment: Alignment.center,
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.blueAccent,
+                      //     borderRadius: BorderRadius.circular(screenWidth / 30),
+                      //   ),
+                      //   child: Text(
+                      //     "Select image",
+                      //     style: TextStyle(
+                      //         color: Colors.white,
+                      //         fontWeight: FontWeight.bold,
+                      //         fontSize: screenHeight / 45),
+                      //   ),
+                      // ),
                     ),
                     SizedBox(
                       height: screenHeight / 40,
                     ),
                     InkWell(
                       onTap: () => uploadFile(),
-                      child: Container(
-                        height: screenHeight / 17.54,
-                        width: screenWidth / 2.74,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          borderRadius: BorderRadius.circular(screenWidth / 30),
-                        ),
-                        child: Text(
-                          "Sign Up",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: screenHeight / 45),
-                        ),
+                      child: MyButton(
+                        "Sign Up",
+                        screenHeight / 17.54,
+                        screenWidth / 2.74,
+                        screenWidth / 30,
                       ),
+                      // child: Container(
+                      //   height: screenHeight / 17.54,
+                      //   width: screenWidth / 2.74,
+                      //   alignment: Alignment.center,
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.blueAccent,
+                      //     borderRadius: BorderRadius.circular(screenWidth / 30),
+                      //   ),
+                      //   child: Text(
+                      //     "Sign Up",
+                      //     style: TextStyle(
+                      //         color: Colors.white,
+                      //         fontWeight: FontWeight.bold,
+                      //         fontSize: screenHeight / 45),
+                      //   ),
+                      // ),
                     ),
                   ],
                 ),

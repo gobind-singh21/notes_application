@@ -13,6 +13,22 @@ class HomeHeader extends StatefulWidget {
 }
 
 class _HomeHeaderState extends State<HomeHeader> {
+  void moveToProfileScreen() {
+    final docRef = db.collection('users').doc(currentFirebaseUser!.uid);
+    docRef.get().then((DocumentSnapshot doc) {
+      final userData = doc.data() as Map<String, dynamic>;
+      EndUser user = EndUser(
+        userData['name'],
+        userData['email'],
+        userData['number'],
+        userData['profileImageURL'],
+        userData['history'],
+      );
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => ProfileScreen(user)));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -35,27 +51,7 @@ class _HomeHeaderState extends State<HomeHeader> {
         child: Row(
           children: [
             InkWell(
-              onTap: () {
-                final docRef =
-                    db.collection('users').doc(currentFirebaseUser!.uid);
-                docRef.get().then((DocumentSnapshot doc) {
-                  final userData = doc.data() as Map<String, dynamic>;
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProfileScreen(EndUser(
-                                userData['name'],
-                                userData['email'],
-                                userData['number'],
-                                userData['profileImageURL'],
-                                userData['history'],
-                              ))));
-                });
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => ProfileScreen(user)));
-              },
+              onTap: () => moveToProfileScreen(),
               child: Container(
                 height: screenHeight / 20,
                 width: screenHeight / 20,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:notes_application/app_widgets/button.dart';
+import 'package:notes_application/app_widgets/text_widgets/heading_text.dart';
 import 'package:notes_application/utils/auth.dart';
 import 'package:notes_application/screens/signup_screen.dart';
 
@@ -10,12 +12,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String errorMessage = "";
-  bool isLogin = true;
-
   bool _passwordNotVisible = true;
-
-  bool _changeButton = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -23,9 +20,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> signInWithEmailAndPassword(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        _changeButton = true;
-      });
       await Auth().signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
@@ -36,8 +30,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String name = "";
-
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -48,23 +40,22 @@ class _LoginScreenState extends State<LoginScreen> {
             key: _formKey,
             child: Column(
               children: [
+                // SizedBox(
+                //   height: screenHeight / 43.85,
+                // ),
+                // Image.asset(
+                //   "assets/images/login_image.png",
+                //   fit: BoxFit.cover,
+                //   height: screenHeight / 4,
+                // ),
                 SizedBox(
                   height: screenHeight / 43.85,
                 ),
-                Image.asset(
-                  "assets/images/login_image.png",
-                  fit: BoxFit.cover,
-                  height: screenHeight / 4,
-                ),
-                SizedBox(
-                  height: screenHeight / 43.85,
-                ),
-                Text(
-                  "Welcome $name",
-                  style: TextStyle(
-                    fontSize: screenHeight / 29.233,
-                    fontWeight: FontWeight.bold,
-                  ),
+                HeadingText(
+                  "Create your account",
+                  screenHeight / 29.233,
+                  null,
+                  Colors.white,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -95,11 +86,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             return "User name cannot be empty";
                           }
                           return null;
-                        },
-                        onChanged: (value) {
-                          name = value;
-                          setState(() {});
-                          // build(context);
                         },
                       ),
                       SizedBox(
@@ -144,32 +130,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       InkWell(
                         onTap: () => signInWithEmailAndPassword(context),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 500),
-                          height: screenHeight / 17.54,
-                          width: _changeButton
-                              ? screenWidth / 8.22
-                              : screenWidth / 2.74,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Colors.blueAccent,
-                            borderRadius: BorderRadius.circular(_changeButton
-                                ? screenWidth / 10.5
-                                : screenWidth / 30),
-                          ),
-                          child: _changeButton
-                              ? Icon(
-                                  Icons.done,
-                                  size: screenWidth / 13.7,
-                                  color: Colors.white,
-                                )
-                              : Text(
-                                  "Login",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: screenHeight / 45),
-                                ),
+                        child: MyButton(
+                          "Login",
+                          screenHeight / 17.54,
+                          screenWidth / 2.74,
+                          screenWidth / 30,
                         ),
                       ),
                       TextButton(
