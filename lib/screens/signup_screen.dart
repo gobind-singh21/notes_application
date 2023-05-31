@@ -15,9 +15,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  String errorMessage = "";
-  bool isLogin = true;
-
   bool _passwordNotVisible = true;
 
   File? pickedFile;
@@ -57,6 +54,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _nameController.dispose();
+    _passwordController.dispose();
+    _numberController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +212,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     InkWell(
                       onTap: () => selectFile(),
                       child: MyButton(
-                        "Sign Up",
+                        "Select file",
                         screenHeight / 17.54,
                         screenWidth / 2.74,
                         screenWidth / 30,

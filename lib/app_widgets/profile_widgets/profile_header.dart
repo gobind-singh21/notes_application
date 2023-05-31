@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:notes_application/app_widgets/text_widgets/heading_text.dart';
 
 class ProfileHeader extends StatelessWidget {
   final String _profileImageUrl;
@@ -28,8 +27,20 @@ class ProfileHeader extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              HeadingText(_name, height / 45, null, Colors.black),
-              HeadingText(_email, height / 55, null, Colors.black),
+              Text(
+                _name,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: height / 45,
+                ),
+              ),
+              Text(
+                _email,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: height / 55,
+                ),
+              )
             ],
           ),
         ],
