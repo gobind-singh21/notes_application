@@ -45,6 +45,9 @@ class Auth {
   Future<void> createUserWithEmailAndPassword(
       {required String email,
       required String password,
+      required String name,
+      required String number,
+      required String? urlDownload,
       required BuildContext context}) async {
     final User? firebaseUser = (await _firebaseAuth
             .createUserWithEmailAndPassword(
@@ -61,6 +64,9 @@ class Auth {
     final userData = <String, dynamic>{
       'id': firebaseUser!.uid,
       'email': email,
+      'name': name,
+      'number': number,
+      'profileImageURL': urlDownload
     };
 
     users.doc(firebaseUser.uid).set(userData);

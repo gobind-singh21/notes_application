@@ -50,6 +50,9 @@ dependencies:
   firebase_dynamic_links: ^5.3.1
   fluttertoast: ^8.2.2
   cloud_firestore: ^4.7.1
+  file_picker: ^5.3.1
+  firebase_storage: ^11.2.1
+  image_cropper: ^4.0.1
   
 
 dev_dependencies:
