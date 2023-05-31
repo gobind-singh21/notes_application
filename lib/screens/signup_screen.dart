@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notes_application/auth.dart';
+import 'package:notes_application/utils/auth.dart';
 import 'package:notes_application/global/global.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:notes_application/screens/home_screen.dart';
