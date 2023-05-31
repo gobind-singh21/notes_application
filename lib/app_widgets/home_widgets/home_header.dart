@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:notes_application/models/user_class.dart';
 import 'package:notes_application/screens/profile_screen.dart';
 import 'package:notes_application/screens/search_screen.dart';
+import 'package:notes_application/global/global.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeHeader extends StatefulWidget {
   const HomeHeader({super.key});
@@ -33,8 +36,25 @@ class _HomeHeaderState extends State<HomeHeader> {
           children: [
             InkWell(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()));
+                final docRef =
+                    db.collection('users').doc(currentFirebaseUser!.uid);
+                docRef.get().then((DocumentSnapshot doc) {
+                  final userData = doc.data() as Map<String, dynamic>;
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfileScreen(EndUser(
+                                userData['name'],
+                                userData['email'],
+                                userData['number'],
+                                userData['profileImageURL'],
+                                userData['history'],
+                              ))));
+                });
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => ProfileScreen(user)));
               },
               child: Container(
                 height: screenHeight / 20,

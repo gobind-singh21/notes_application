@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:notes_application/app_widgets/front_page_item.dart';
+import 'package:notes_application/app_widgets/home_widgets/front_page_item.dart';
+import 'package:notes_application/auth.dart';
 import 'package:notes_application/models/product_class.dart';
+import 'package:notes_application/screens/login_screen.dart';
 import 'package:notes_application/screens/product_detail_screen.dart';
-import 'package:notes_application/app_widgets/list_item.dart';
-import 'package:notes_application/app_widgets/home_header.dart';
+import 'package:notes_application/app_widgets/home_widgets/list_item.dart';
+import 'package:notes_application/app_widgets/home_widgets/home_header.dart';
 import 'package:notes_application/dummy_data.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,8 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       floatingActionButton: InkWell(
         onTap: () {
-          print(screenHeight);
-          print(screenWidth);
+          Auth().signOut();
+          Navigator.popUntil(context, ModalRoute.withName('/someRoute'));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => LoginScreen()));
         },
         child: Container(
           height: screenHeight / 15.17,

@@ -75,11 +75,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       TextFormField(
                         controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                          hintText: "Enter user name",
-                          labelText: "User name",
+                          hintText: "Enter email",
+                          labelText: "Email",
                           prefixIcon: Icon(
-                            Icons.person,
+                            Icons.person_outline,
                             size: screenHeight / 29.2333,
                           ),
                           labelStyle: TextStyle(
@@ -111,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             hintText: "Enter password",
                             labelText: "Password",
                             prefixIcon: Icon(
-                              Icons.password,
+                              Icons.lock_outline,
                               size: screenHeight / 29.2333,
                             ),
                             labelStyle: TextStyle(
