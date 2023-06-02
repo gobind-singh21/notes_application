@@ -41,6 +41,9 @@ class Auth {
       final doc = await docRef.get();
       final data = doc.data() as Map<String, dynamic>?;
       if (data != null) {
+        currentFirebaseUser = fAuth.currentUser;
+        profileImagePath =
+            'users/${currentFirebaseUser!.uid}/profile_images/profile.jpg';
         Fluttertoast.showToast(msg: 'Login successful');
         setUserData(
           name: data['name'],
@@ -77,12 +80,22 @@ class Auth {
     try {
       final UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
+      currentFirebaseUser = fAuth.currentUser;
+      profileImagePath =
+          'users/${currentFirebaseUser!.uid}/profile_images/profile.jpg';
+      // print("Error here");
       final path = profileImagePath;
+      // print("Error here");
       final ref = FirebaseStorage.instance.ref().child(path);
+      // print("Error here");
       final uploadTask = ref.putFile(pickedFile!);
+      // print("Error here");
       final snapshot = await uploadTask.whenComplete(() {});
+      // print("Error here");
       final profileImageURL = await snapshot.ref.getDownloadURL();
+      // print("Error here");
       Fluttertoast.showToast(msg: 'created');
+      // print("Error here");
       final users = db.collection('users');
       final userData = <String, dynamic>{
         'id': userCredential.user!.uid,

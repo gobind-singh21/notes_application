@@ -5,8 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 FirebaseFirestore db = FirebaseFirestore.instance;
 final FirebaseAuth fAuth = FirebaseAuth.instance;
 User? currentFirebaseUser;
-String profileImagePath =
-    'users/${currentFirebaseUser!.uid}/profile_images/profile.jpg';
+String profileImagePath = '';
 // EndUser? currentUserInfo;
 
 // set CurrentUser(EndUser temp) {

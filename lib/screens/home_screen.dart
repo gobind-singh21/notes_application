@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notes_application/app_widgets/home_widgets/front_page_item.dart';
 import 'package:notes_application/global/current_user_data.dart';
+import 'package:notes_application/global/global.dart';
 import 'package:notes_application/models/product_class.dart';
 import 'package:notes_application/screens/product_detail_screen.dart';
 import 'package:notes_application/app_widgets/home_widgets/list_item.dart';
@@ -33,6 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    profileImagePath =
+        'users/${currentFirebaseUser!.uid}/profile_images/profile.jpg';
     if (!UserData.userDataSet) {
       asyncMethod();
     }
