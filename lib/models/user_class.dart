@@ -1,9 +1,9 @@
 class EndUser {
-  final String _name;
+  String _name;
   // final int _age;
-  final String _email;
-  final String _phoneNumber;
-  final List<Borrowed>? _history;
+  String _email;
+  String _phoneNumber;
+  List<Borrowed>? _history;
   String _profileImageUrl;
 
   EndUser(
@@ -33,6 +33,22 @@ class EndUser {
 
   List<Borrowed>? getHistory() {
     return _history;
+  }
+
+  void setName(String name) {
+    _name = name;
+  }
+
+  void setEmail(String email) {
+    _email = email;
+  }
+
+  void setNumber(String number) {
+    _phoneNumber = number;
+  }
+
+  void setProfileImageUrl(String url) {
+    _profileImageUrl = url;
   }
 }
 

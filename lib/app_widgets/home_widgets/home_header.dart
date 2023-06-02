@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:notes_application/global/dimensions.dart';
-import 'package:notes_application/models/user_class.dart';
+// import 'package:notes_application/models/user_class.dart';
 import 'package:notes_application/screens/profile_screen.dart';
 import 'package:notes_application/screens/search_screen.dart';
-import 'package:notes_application/global/global.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:notes_application/global/global.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeHeader extends StatefulWidget {
   const HomeHeader({super.key});
@@ -18,19 +18,8 @@ class _HomeHeaderState extends State<HomeHeader> {
   double screenWidth = Dimensions.screenHeight;
 
   void moveToProfileScreen() {
-    final docRef = db.collection('users').doc(currentFirebaseUser!.uid);
-    docRef.get().then((DocumentSnapshot doc) {
-      final userData = doc.data() as Map<String, dynamic>;
-      EndUser user = EndUser(
-        userData['name'],
-        userData['email'],
-        userData['number'],
-        userData['profileImageURL'],
-        userData['history'],
-      );
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => ProfileScreen(user)));
-    });
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ProfileScreen()));
   }
 
   @override

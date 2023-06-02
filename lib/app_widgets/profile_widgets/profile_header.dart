@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:notes_application/global/current_user_data.dart';
 import 'package:notes_application/global/dimensions.dart';
 
 class ProfileHeader extends StatelessWidget {
-  final String _profileImageUrl;
-  final String _name;
-  final String _email;
-  ProfileHeader(this._name, this._email, this._profileImageUrl);
+  ProfileHeader();
   final double height = Dimensions.screenHeight;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      padding: EdgeInsets.only(top: height / 40),
       height: height / 4,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -18,7 +17,7 @@ class ProfileHeader extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: Image.network(
-              _profileImageUrl,
+              UserData.profileImageURL,
               height: height / 8,
             ),
           ),
@@ -29,14 +28,14 @@ class ProfileHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                _name,
+                UserData.name,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: height / 45,
                 ),
               ),
               Text(
-                _email,
+                UserData.email,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: height / 55,

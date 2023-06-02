@@ -6,69 +6,70 @@ import 'package:notes_application/screens/login_screen.dart';
 import 'package:notes_application/models/user_class.dart';
 import 'package:notes_application/screens/profile_screens/edit_profile_screen.dart';
 import 'package:notes_application/screens/profile_screens/settings_screen.dart';
+import 'package:notes_application/global/current_user_data.dart';
 
-class ProfileScreen extends StatefulWidget {
-  final EndUser _user;
-  const ProfileScreen(this._user, {super.key});
+class ProfileScreen extends StatelessWidget {
+  ProfileScreen({Key? key}) : super(key: key);
 
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState(_user);
-}
+  final String name = UserData.name;
+  final String email = UserData.email;
+  final String number = UserData.number;
+  final String profileImageURL = UserData.profileImageURL;
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  String errorMessage = "";
-  final EndUser _user;
-  _ProfileScreenState(this._user);
-
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
     await Auth().signOut();
-    Navigator.popUntil(context, ModalRoute.withName('/anything'));
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+        ModalRoute.withName('/always'));
+    // Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Column(
-        children: [
-          ProfileHeader(
-            _user.getName(),
-            _user.getEmail(),
-            _user.getProfileImage(),
-          ),
-          InkWell(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => EditProfileScreen()),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ProfileHeader(),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => EditProfileScreen(
+                      EndUser(UserData.name, UserData.email, UserData.number,
+                          UserData.profileImageURL, null),
+                    ),
+                  ),
+                );
+              },
+              child: ProfileItem(
+                const Icon(Icons.person_outline),
+                'Account',
+              ),
             ),
-            child: ProfileItem(
-              const Icon(Icons.person_outline),
-              'Account',
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => SettingsScreen()),
+                );
+              },
+              child: ProfileItem(
+                const Icon(Icons.settings_outlined),
+                'Settings',
+              ),
             ),
-          ),
-          InkWell(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SettingsScreen()),
+            InkWell(
+              onTap: () {
+                signOut(context);
+              },
+              child: ProfileItem(const Icon(Icons.logout_outlined), 'Log out'),
             ),
-            child: ProfileItem(
-              const Icon(Icons.settings_outlined),
-              'Settings',
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              Auth().signOut();
-              Navigator.popUntil(context, ModalRoute.withName('/someRoute'));
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()));
-            },
-            child: ProfileItem(const Icon(Icons.logout_outlined), 'Log out'),
-          )
-        ],
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
