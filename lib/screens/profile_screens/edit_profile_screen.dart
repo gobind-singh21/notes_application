@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_application/app_widgets/text_widgets/heading_text.dart';
 import 'package:notes_application/global/current_user_data.dart';
 import 'package:notes_application/global/dimensions.dart';
-import 'package:notes_application/models/user_class.dart';
+// import 'package:notes_application/models/user_class.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notes_application/utils/auth.dart';
@@ -11,9 +11,7 @@ import 'package:notes_application/utils/cropper.dart';
 import 'dart:io';
 
 class EditProfileScreen extends StatefulWidget {
-  final EndUser user;
-
-  const EditProfileScreen(this.user);
+  const EditProfileScreen({super.key});
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -95,7 +93,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           child: const Text('Confirm'),
           onPressed: () async {
             AuthCredential credential = EmailAuthProvider.credential(
-              email: widget.user.getEmail(),
+              email: UserData.email,
               password: passwordController.text,
             );
             User? user = FirebaseAuth.instance.currentUser;
@@ -134,7 +132,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       name: _nameController.text.trim(),
       number: _numberController.text.trim(),
       profileImage: imageEdited ? pickedFile : null,
-      oldImageUrl: widget.user.getProfileImage(),
+      oldImageUrl: UserData.profileImageURL,
     );
   }
 
@@ -185,7 +183,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             height: height / 4,
                           )
                         : Image.network(
-                            widget.user.getProfileImage(),
+                            UserData.profileImageURL,
                             height: height / 4,
                           ),
                   ),

@@ -20,6 +20,7 @@ class Auth {
     UserData.name = name;
     UserData.number = number;
     UserData.profileImageURL = profileImageURL;
+    UserData.userDataSet = true;
   }
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -41,14 +42,6 @@ class Auth {
       final data = doc.data() as Map<String, dynamic>?;
       if (data != null) {
         Fluttertoast.showToast(msg: 'Login successful');
-        // final temp = EndUser(
-        //   data['name'],
-        //   data['email'],
-        //   data['number'],
-        //   data['profileImageURL'],
-        //   null,
-        // );
-        // currentUserInfo = temp;
         setUserData(
           name: data['name'],
           email: data['email'],

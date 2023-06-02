@@ -5,6 +5,7 @@ class UserData {
   static String email = "";
   static String number = "";
   static String profileImageURL = "";
+  static bool userDataSet = false;
 
   static fetchData() async {
     final docRef = db.collection('users').doc(currentFirebaseUser!.uid);
@@ -14,5 +15,6 @@ class UserData {
     email = data['email'];
     number = data['number'];
     profileImageURL = data['profileImageURL'];
+    userDataSet = true;
   }
 }

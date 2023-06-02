@@ -9,7 +9,6 @@ import 'package:notes_application/screens/login_screen.dart';
 import 'package:notes_application/utils/dummy_data.dart';
 import 'package:notes_application/utils/auth.dart';
 import 'package:notes_application/global/dimensions.dart';
-import 'package:notes_application/global/global.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,20 +26,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   asyncMethod() async {
-    final docRef = db.collection('users').doc(currentFirebaseUser!.uid);
-    final doc = await docRef.get();
-    final data = doc.data() as Map<String, dynamic>;
-    UserData.name = data['name'];
-    UserData.email = data['email'];
-    UserData.number = data['number'];
-    UserData.profileImageURL = data['profileImageURL'];
+    await UserData.fetchData();
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    asyncMethod();
+    if (!UserData.userDataSet) {
+      asyncMethod();
+    }
   }
 
   @override

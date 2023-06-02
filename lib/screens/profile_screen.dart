@@ -3,7 +3,6 @@ import 'package:notes_application/app_widgets/profile_widgets/profile_header.dar
 import 'package:notes_application/app_widgets/profile_widgets/profile_items.dart';
 import 'package:notes_application/utils/auth.dart';
 import 'package:notes_application/screens/login_screen.dart';
-import 'package:notes_application/models/user_class.dart';
 import 'package:notes_application/screens/profile_screens/edit_profile_screen.dart';
 import 'package:notes_application/screens/profile_screens/settings_screen.dart';
 import 'package:notes_application/global/current_user_data.dart';
@@ -37,10 +36,7 @@ class ProfileScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => EditProfileScreen(
-                      EndUser(UserData.name, UserData.email, UserData.number,
-                          UserData.profileImageURL, null),
-                    ),
+                    builder: (_) => EditProfileScreen(),
                   ),
                 );
               },

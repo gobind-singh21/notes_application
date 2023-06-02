@@ -30,6 +30,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> signInWithEmailAndPassword(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
+      AlertDialog alert = AlertDialog(
+        content: Row(
+          children: [
+            const CircularProgressIndicator(),
+            Container(
+                margin: const EdgeInsets.only(left: 7),
+                child: const Text("Loging in...")),
+          ],
+        ),
+      );
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
       await Auth().signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
