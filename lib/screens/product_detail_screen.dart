@@ -1,23 +1,54 @@
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notes_application/global/dimensions.dart';
-import 'package:notes_application/models/product_class.dart';
+// import 'package:notes_application/models/product_class.dart';
+import 'package:notes_application/app_widgets/button.dart';
 import 'package:notes_application/app_widgets/unordered_list.dart';
 import 'package:notes_application/screens/search_screen.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:readmore/readmore.dart';
+import 'package:notes_application/global/global.dart';
 
 class ProductScreen extends StatefulWidget {
-  final Product _product;
-  const ProductScreen(this._product, {super.key});
+  final Map<String, dynamic> map;
+  const ProductScreen({super.key, required this.map});
 
   @override
-  State<ProductScreen> createState() => _ProductScreenState(_product);
+  State<ProductScreen> createState() => _ProductScreenState();
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  final double height = Dimensions.screenHeight;
+  final double width = Dimensions.screenWidth;
   PageController pageController = PageController(viewportFraction: 0.85);
-  double imageHeight = Dimensions.screenHeight / 3.25;
-  double width = Dimensions.screenWidth;
+  final double imageHeight = Dimensions.screenHeight / 3.25;
+
+  Future placeOrder() async {
+    DateTime startTimeStamp = DateTime.now();
+    final userDocRef = db.collection('users').doc(currentFirebaseUser!.uid);
+    final productDocRef =
+        db.collection('products').doc(widget.map['productID']);
+    final orderRef = db.collection('orders');
+    String orderID = "";
+    Map<String, dynamic> orderInfo = {
+      'UID': currentFirebaseUser!.uid,
+      'productID': widget.map['productID'],
+      'startTimeStamp': startTimeStamp,
+    };
+    await orderRef.add(orderInfo).then((documentSnapshot) {
+      orderID = documentSnapshot.id;
+    });
+    final userDocData = await userDocRef.get();
+    final productDocData = await productDocRef.get();
+    final userData = userDocData.data() as Map<String, dynamic>;
+    final productData = productDocData.data() as Map<String, dynamic>;
+    userData['history'].add(orderID);
+    productData['history'].add(orderID);
+    await userDocRef.update({'history': userData['history']});
+    await productDocRef.update({'history': productData['history']});
+    Fluttertoast.showToast(msg: 'Order placed successfully');
+  }
 
   var _currPageValue = 0.0;
   @override
@@ -36,14 +67,19 @@ class _ProductScreenState extends State<ProductScreen> {
     pageController.dispose();
   }
 
-  final Product _product;
+  // final Product _product;
 
-  _ProductScreenState(this._product);
+  // _ProductScreenState(this._product);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: InkWell(
+        onTap: () => placeOrder(),
+        child: MyButton('Order', height / 20, height / 10, 10),
+      ),
       appBar: AppBar(
+        backgroundColor: Colors.cyan,
         elevation: 4,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_outlined),
@@ -90,15 +126,15 @@ class _ProductScreenState extends State<ProductScreen> {
                 physics: const BouncingScrollPhysics(),
                 controller: pageController,
                 scrollDirection: Axis.horizontal,
-                itemCount: _product.getProductImages().length,
+                itemCount: widget.map['productImageURLs'].length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: EdgeInsets.only(
                       left: width / 102.75,
                       right: width / 102.75,
                     ),
-                    child: Image(
-                      image: _product.getProductImages()[index].image,
+                    child: Image.network(
+                      widget.map['productImageURLs'][index],
                     ),
                   );
                 },
@@ -108,13 +144,15 @@ class _ProductScreenState extends State<ProductScreen> {
               padding: const EdgeInsets.all(4.0),
               child: Center(
                 child: DotsIndicator(
-                  dotsCount: _product.getProductImages().length,
+                  dotsCount: widget.map['productImageURLs'].length,
                   position: _currPageValue.round(),
                   decorator: DotsDecorator(
-                      size: const Size.square(9),
-                      activeSize: const Size(18, 9),
-                      activeShape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5))),
+                    size: const Size.square(9),
+                    activeSize: const Size(18, 9),
+                    activeShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -129,7 +167,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ReadMoreText(
-                    _product.getTitle(),
+                    widget.map['name'],
                     trimLines: 2,
                     colorClickableText: Colors.blue,
                     trimMode: TrimMode.Line,
@@ -166,7 +204,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       const SizedBox(
                         height: 5,
                       ),
-                      UnorderedList(_product.getDescription()),
+                      UnorderedList(widget.map['description']),
                     ],
                   ),
                 ),

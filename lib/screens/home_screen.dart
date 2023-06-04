@@ -1,14 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_application/app_widgets/home_widgets/front_page_item.dart';
 import 'package:notes_application/global/current_user_data.dart';
 import 'package:notes_application/global/global.dart';
-import 'package:notes_application/models/product_class.dart';
+import 'package:notes_application/screens/history_screen.dart';
+// import 'package:notes_application/models/product_class.dart';
 import 'package:notes_application/screens/product_detail_screen.dart';
 import 'package:notes_application/app_widgets/home_widgets/list_item.dart';
 import 'package:notes_application/app_widgets/home_widgets/home_header.dart';
-import 'package:notes_application/screens/login_screen.dart';
-import 'package:notes_application/utils/dummy_data.dart';
-import 'package:notes_application/utils/auth.dart';
+// import 'package:notes_application/screens/login_screen.dart';
+// import 'package:notes_application/utils/dummy_data.dart';
+// import 'package:notes_application/utils/auth.dart';
 import 'package:notes_application/global/dimensions.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,15 +21,41 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  double screenHeight = Dimensions.screenHeight;
+  final double screenHeight = Dimensions.screenHeight;
+  List<QueryDocumentSnapshot> documentSnapshot = [];
+  List<Map<String, dynamic>> products = [];
+  List<Map<String, dynamic>> topProducts = [];
 
-  void moveToProductScreen(Product object) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: ((context) => ProductScreen(object))));
+  void moveToProductScreen(Map<String, dynamic> map) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProductScreen(
+          map: map,
+        ),
+      ),
+    );
   }
 
   asyncMethod() async {
     await UserData.fetchData();
+  }
+
+  fetchProducts() async {
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('products').get();
+    setState(() {
+      products = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        data['productID'] = doc.id;
+        return data;
+      }).toList();
+      for (var prod in products) {
+        if (prod['top']) {
+          topProducts.add(prod);
+        }
+      }
+    });
   }
 
   @override
@@ -39,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!UserData.userDataSet) {
       asyncMethod();
     }
+    fetchProducts();
   }
 
   @override
@@ -46,10 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       floatingActionButton: InkWell(
         onTap: () {
-          Auth().signOut();
-          Navigator.popUntil(context, ModalRoute.withName('/someRoute'));
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => HistoryScreen()));
         },
         child: Container(
           height: Dimensions.screenHeight / 15.17,
@@ -82,14 +109,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ], color: Colors.white70),
                     height: screenHeight / 2.95,
-                    child: TopItem(),
+                    child: TopItem(map: topProducts),
                   ),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: DummyData.products.length,
+                    itemCount: products.length,
                     itemBuilder: (context, index) {
-                      return ListItem(DummyData.products[index]);
+                      Map<String, dynamic> map = products[index];
+                      return InkWell(
+                        onTap: () => moveToProductScreen(map),
+                        child: ListItem(map: map),
+                      );
                     },
                   ),
                 ],

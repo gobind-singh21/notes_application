@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:notes_application/app_widgets/text_widgets/heading_text.dart';
 import 'package:notes_application/global/dimensions.dart';
 import 'package:notes_application/screens/product_detail_screen.dart';
-import 'package:notes_application/models/product_class.dart';
+// import 'package:notes_application/models/product_class.dart';
 // import 'package:notes_application/utils/dummy_data.dart';
 
 class BuildPage extends StatelessWidget {
   // final int _index;
-  final Product _product;
-  BuildPage(this._product);
+  final Map<String, dynamic> map;
+  BuildPage({required this.map});
 
   final double imageHeight = Dimensions.screenHeight / 3.2;
   final double width = Dimensions.screenWidth;
@@ -18,8 +18,14 @@ class BuildPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ProductScreen(_product)));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductScreen(
+              map: map,
+            ),
+          ),
+        );
       },
       child: Padding(
           padding: EdgeInsets.only(left: width / 205.5, right: width / 205.5),
@@ -38,8 +44,11 @@ class BuildPage extends StatelessWidget {
                     )
                   ],
                   color: Colors.white,
-                  image: DecorationImage(
-                    image: _product.getIcon(),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.network(
+                    map['productImageURLs'].first,
                   ),
                 ),
               ),
@@ -64,7 +73,7 @@ class BuildPage extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        HeadingText(_product.getTitle(), imageHeight / 20,
+                        HeadingText(map['name'], imageHeight / 20,
                             TextOverflow.ellipsis, Colors.black),
                       ],
                     ),
