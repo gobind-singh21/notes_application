@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notes_application/global/global.dart';
 
 class UserData {
@@ -12,23 +13,39 @@ class UserData {
   static bool userDataSet = false;
 
   static fetchData() async {
-    final docRef = db.collection('users').doc(currentFirebaseUser!.uid);
-    final doc = await docRef.get();
-    final data = doc.data() as Map<String, dynamic>;
-    name = data['name'];
-    email = data['email'];
-    number = data['number'];
-    profileImageURL = data['profileImageURL'];
-    if(data['country'] != null) {
-      country = data['country'];
+    try {
+      final docRef = db.collection('users').doc(currentFirebaseUser!.uid);
+      final doc = await docRef.get();
+      final data = doc.data() as Map<String, dynamic>;
+      if(data['name'] == null) {
+        print('Name is null');
+      }
+      name = data['name'];
+      if(data['email'] == null) {
+        print('Email is null');
+      }
+      email = data['email'];
+      if(data['number'] == null) {
+        print('number is null');
+      }
+      number = data['number'];
+      if(data['profileImageURL'] == null) {
+        print('Profile Image URL is null');
+      }
+      profileImageURL = data['profileImageURL'];
+      if (data['country'] != null) {
+        country = data['country'];
+      }
+      if (data['state'] != null) {
+        state = data['state'];
+      }
+      if (data['city'] != null) {
+        city = data['city'];
+      }
+      history = data['history'];
+      userDataSet = true;
+    } catch(e) {
+      Fluttertoast.showToast(msg: '$e');
     }
-    if(data['state'] != null) {
-      state = data['state'];
-    }
-    if(data['city'] != null) {
-      city = data['city'];
-    }
-    history = data['history'];
-    userDataSet = true;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notes_application/app_widgets/home_widgets/front_page_item.dart';
 import 'package:notes_application/global/current_user_data.dart';
 import 'package:notes_application/global/global.dart';
@@ -11,6 +12,8 @@ import 'package:notes_application/global/dimensions.dart';
 import 'package:notes_application/screens/profile_screen.dart';
 import 'package:notes_application/screens/search_screen.dart';
 
+import '../app_widgets/text_widgets/heading_text.dart';
+
 List<Map<String, dynamic>> products = [];
 List<Map<String, dynamic>> topProducts = [];
 double screenHeight = Dimensions.screenHeight;
@@ -18,8 +21,12 @@ double screenHeight = Dimensions.screenHeight;
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  Future getProducts() async {
+  Future fetchUserData() async {
     await UserData.fetchData();
+  }
+
+  Future getProducts() async {
+    // await UserData.fetchData();
     QuerySnapshot querySnapshot = await db.collection('products').get();
     products = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -106,7 +113,30 @@ class HomeScreen extends StatelessWidget {
                         left: screenWidth / 45,
                         right: screenWidth / 45,
                       ),
-                      child: const Region(),
+                      child: FutureBuilder(
+                        future: fetchUserData(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const HeadingText(
+                              'Loading region...',
+                              20,
+                              TextOverflow.fade,
+                              Colors.black,
+                            );
+                          }
+                          else if(snapshot.hasError) {
+                            Fluttertoast.showToast(msg: 'Error occurred in loading region please restart app');
+                            return const HeadingText(
+                              'Error occurred in loading region',
+                              20,
+                              TextOverflow.fade,
+                              Colors.black,
+                            );
+                          }
+                          return const Region();
+                        },
+                      ),
                     ),
                   ),
                   InkWell(

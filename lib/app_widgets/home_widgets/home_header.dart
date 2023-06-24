@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:notes_application/app_widgets/text_widgets/heading_text.dart';
 import 'package:notes_application/global/dimensions.dart';
-import 'package:country_state_city_picker/country_state_city_picker.dart';
 import 'package:notes_application/global/current_user_data.dart';
 import 'package:notes_application/utils/auth.dart';
+import 'package:csc_picker/csc_picker.dart';
 
 double screenHeight = Dimensions.screenHeight;
 double screenWidth = Dimensions.screenHeight;
@@ -41,34 +41,37 @@ class _RegionState extends State<Region> {
               ),
               content: Column(
                 children: [
-                  SelectState(
-                    // style: TextStyle(color: Colors.red),
+                  CSCPicker(
                     onCountryChanged: (value) {
-                      setState(() {
-                        countryValue = value;
-                      });
+                      countryValue = value;
                     },
                     onStateChanged: (value) {
-                      setState(() {
+                      if(value != null) {
                         stateValue = value;
-                      });
+                      }
                     },
                     onCityChanged: (value) {
-                      setState(() {
+                      if(value != null) {
                         cityValue = value;
-                      });
+                      }
                     },
-                  ),
+                  )
                 ],
               ),
               actions: [
                 TextButton(
                   onPressed: () async {
+                    int index = countryValue.indexOf(' ');
+                    String newCountryValue = countryValue.substring(index + 1);
+                    countryValue = newCountryValue;
                     await Auth().addUserInfo({
                       'country': countryValue,
                       'state': stateValue,
                       'city': cityValue
                     });
+                    UserData.city = cityValue;
+                    UserData.state = stateValue;
+                    UserData.country = countryValue;
                     Navigator.of(context).pop();
                   },
                   child: const Text("Confirm"),
@@ -90,7 +93,7 @@ class _RegionState extends State<Region> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "$stateValue, $countryValue",
+            "$stateValue,$countryValue",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: screenHeight / 60,
