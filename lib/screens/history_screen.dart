@@ -74,6 +74,11 @@ class _ReturnWidgetState extends State<ReturnWidget> {
       },
     );
     if (paymentConfirmation) {
+      double totalRevenue = pricePaid;
+      totalRevenue += prodInfo['totalRevenue'];
+      productDocRef.update({
+        'totalRevenue': totalRevenue,
+      });
       orderDocRef.update({
         'endTimeStamp': endTimeStamp,
         'pricePaid': pricePaid.toPrecision(2),
@@ -244,7 +249,7 @@ class HistoryScreen extends StatelessWidget {
                     height: height / 70,
                   ),
                   const Text(
-                    'Error occured try again later...',
+                    'Error occurred try again later...',
                     style: TextStyle(
                       fontSize: 35,
                       color: Colors.black,

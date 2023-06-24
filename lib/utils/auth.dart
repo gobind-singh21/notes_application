@@ -39,8 +39,8 @@ class Auth {
           .signInWithEmailAndPassword(email: email, password: password);
       final docRef = db.collection('users').doc(userCredential.user!.uid);
       final doc = await docRef.get();
-      final data = doc.data() as Map<String, dynamic>?;
-      if (data != null) {
+      final data = doc.data() as Map<String, dynamic>;
+      // if (data != null) {
         currentFirebaseUser = fAuth.currentUser;
         profileImagePath =
             'users/${currentFirebaseUser!.uid}/profile_images/profile.jpg';
@@ -55,12 +55,12 @@ class Auth {
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
         );
-      } else {
-        Fluttertoast.showToast(
-          msg: 'No record found',
-          toastLength: Toast.LENGTH_LONG,
-        );
-      }
+      // } else {
+      //   Fluttertoast.showToast(
+      //     msg: 'No record found',
+      //     toastLength: Toast.LENGTH_LONG,
+      //   );
+      // }
     } catch (error) {
       Fluttertoast.showToast(
         msg: error.toString(),
@@ -170,5 +170,11 @@ class Auth {
       profileImageURL: profileImageURL,
     );
     Fluttertoast.showToast(msg: 'Profile updated successfully!');
+
+  }
+
+  Future addUserInfo(Map<String, dynamic> map) async {
+    final userDocRef = db.collection('users').doc(currentFirebaseUser!.uid);
+    await userDocRef.update(map);
   }
 }

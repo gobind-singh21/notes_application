@@ -5,6 +5,10 @@ class UserData {
   static String email = "";
   static String number = "";
   static String profileImageURL = "";
+  static String country = "Country";
+  static String state = "State";
+  static String city = "City";
+  static List<dynamic> history = [];
   static bool userDataSet = false;
 
   static fetchData() async {
@@ -15,6 +19,16 @@ class UserData {
     email = data['email'];
     number = data['number'];
     profileImageURL = data['profileImageURL'];
+    if(data['country'] != null) {
+      country = data['country'];
+    }
+    if(data['state'] != null) {
+      state = data['state'];
+    }
+    if(data['city'] != null) {
+      city = data['city'];
+    }
+    history = data['history'];
     userDataSet = true;
   }
 }

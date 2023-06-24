@@ -1,118 +1,116 @@
 import 'package:flutter/material.dart';
+import 'package:notes_application/app_widgets/text_widgets/heading_text.dart';
 import 'package:notes_application/global/dimensions.dart';
-// import 'package:notes_application/models/user_class.dart';
-import 'package:notes_application/screens/profile_screen.dart';
-import 'package:notes_application/screens/search_screen.dart';
-// import 'package:notes_application/global/global.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:country_state_city_picker/country_state_city_picker.dart';
+import 'package:notes_application/global/current_user_data.dart';
+import 'package:notes_application/utils/auth.dart';
 
-class HomeHeader extends StatefulWidget {
-  const HomeHeader({super.key});
+double screenHeight = Dimensions.screenHeight;
+double screenWidth = Dimensions.screenHeight;
+
+class Region extends StatefulWidget {
+  const Region({super.key});
 
   @override
-  State<HomeHeader> createState() => _HomeHeaderState();
+  State<Region> createState() => _RegionState();
 }
 
-class _HomeHeaderState extends State<HomeHeader> {
-  double screenHeight = Dimensions.screenHeight;
-  double screenWidth = Dimensions.screenHeight;
-
-  void moveToProfileScreen() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProfileScreen()));
-  }
+class _RegionState extends State<Region> {
+  String countryValue = UserData.country;
+  String stateValue = UserData.state;
+  String cityValue = UserData.city;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: screenHeight / 8.5,
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: const Color.fromARGB(108, 93, 93, 93),
-          offset: Offset(0, screenHeight / 296),
-          blurRadius: 4,
-        )
-      ], color: Colors.white),
-      child: Padding(
-        padding: EdgeInsets.only(
-            left: screenWidth / 45,
-            top: screenHeight / 23,
-            right: screenWidth / 45,
-            bottom: screenHeight / 120),
-        child: Row(
-          children: [
-            InkWell(
-              onTap: () => moveToProfileScreen(),
-              child: Container(
-                height: screenHeight / 20,
-                width: screenHeight / 20,
-                decoration: BoxDecoration(
-                  color: Colors.cyan,
-                  borderRadius: BorderRadius.circular(screenWidth / 80),
+    return InkWell(
+      onTap: () async {
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              titlePadding: const EdgeInsets.only(
+                bottom: 10,
+              ),
+              icon: const Icon(Icons.location_city_rounded),
+              title: const HeadingText(
+                  'Select your region', 20, TextOverflow.fade, Colors.black),
+              scrollable: true,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(screenWidth / 80),
+              ),
+              content: Column(
+                children: [
+                  SelectState(
+                    // style: TextStyle(color: Colors.red),
+                    onCountryChanged: (value) {
+                      setState(() {
+                        countryValue = value;
+                      });
+                    },
+                    onStateChanged: (value) {
+                      setState(() {
+                        stateValue = value;
+                      });
+                    },
+                    onCityChanged: (value) {
+                      setState(() {
+                        cityValue = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () async {
+                    await Auth().addUserInfo({
+                      'country': countryValue,
+                      'state': stateValue,
+                      'city': cityValue
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Confirm"),
                 ),
-                child: Icon(
-                  Icons.person,
-                  size: screenHeight / 40,
-                  // color: Colors.white,
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Cancel"),
+                )
+              ],
+            );
+          },
+          barrierDismissible: false,
+        );
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "$stateValue, $countryValue",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenHeight / 60,
+            ),
+          ),
+          Row(
+            children: [
+              Text(
+                cityValue,
+                style: TextStyle(
+                  fontSize: screenHeight / 80,
                 ),
               ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: screenWidth / 45,
-                  right: screenWidth / 45,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Country",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: screenHeight / 40,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "City",
-                          style: TextStyle(
-                            fontSize: screenHeight / 60,
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_drop_down,
-                          size: screenHeight / 45,
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SearchScreen()));
-              },
-              child: Container(
-                height: screenHeight / 20,
-                width: screenHeight / 20,
-                decoration: BoxDecoration(
-                  color: Colors.cyan,
-                  borderRadius: BorderRadius.circular(screenWidth / 80),
-                ),
-                child: Icon(
-                  Icons.search,
-                  size: screenHeight / 40,
-                  // color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
+              Icon(
+                Icons.arrow_drop_down,
+                size: screenHeight / 45,
+              )
+            ],
+          )
+        ],
       ),
     );
   }
