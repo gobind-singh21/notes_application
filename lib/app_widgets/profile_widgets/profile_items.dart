@@ -4,7 +4,7 @@ import 'package:notes_application/global/dimensions.dart';
 class ProfileItem extends StatelessWidget {
   final Icon _icon;
   final String _title;
-  ProfileItem(this._icon, this._title);
+  ProfileItem(this._icon, this._title, {super.key});
 
   final double height = Dimensions.screenHeight;
   final double width = Dimensions.screenWidth;
@@ -14,7 +14,7 @@ class ProfileItem extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(width),
-        color: Colors.grey.shade100,
+        color: Theme.of(context).cardColor,
       ),
       height: height / 15,
       padding: EdgeInsets.only(
@@ -35,9 +35,9 @@ class ProfileItem extends StatelessWidget {
             ),
           ),
           const Expanded(child: SizedBox()),
-          const Icon(
+          Icon(
             Icons.chevron_right_rounded,
-            // color: Colors.black,
+            // color: Theme.of(context).iconTheme.color,
           ),
         ],
       ),

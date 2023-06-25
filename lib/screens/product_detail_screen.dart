@@ -1,8 +1,6 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notes_application/global/dimensions.dart';
-// import 'package:notes_application/models/product_class.dart';
 import 'package:notes_application/app_widgets/button.dart';
 import 'package:notes_application/app_widgets/unordered_list.dart';
 import 'package:notes_application/screens/search_screen.dart';
@@ -12,6 +10,7 @@ import 'package:notes_application/global/global.dart';
 
 class ProductScreen extends StatefulWidget {
   final Map<String, dynamic> map;
+
   const ProductScreen({super.key, required this.map});
 
   @override
@@ -51,6 +50,7 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   var _currPageValue = 0.0;
+
   @override
   void initState() {
     super.initState();
@@ -79,10 +79,13 @@ class _ProductScreenState extends State<ProductScreen> {
         child: MyButton('Order', height / 20, height / 10, 10),
       ),
       appBar: AppBar(
-        backgroundColor: Colors.cyan,
+        // backgroundColor: Colors.cyan,
         elevation: 4,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_outlined),
+          icon: Icon(
+            Icons.arrow_back_ios_new_outlined,
+            color: Theme.of(context).iconTheme.color,
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -91,22 +94,35 @@ class _ProductScreenState extends State<ProductScreen> {
         actions: [
           InkWell(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SearchScreen()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SearchScreen(),
+                ),
+              );
             },
-            child: Icon(Icons.search),
+            child: Icon(
+              Icons.search,
+              color: Theme.of(context).iconTheme.color,
+            ),
           ),
           SizedBox(
             width: width / 20.55,
           ),
           InkWell(
-            child: Icon(Icons.mic),
+            child: Icon(
+              Icons.mic,
+              color: Theme.of(context).iconTheme.color,
+            ),
           ),
           SizedBox(
             width: width / 20.55,
           ),
           InkWell(
-            child: Icon(Icons.shopping_cart),
+            child: Icon(
+              Icons.shopping_cart,
+              color: Theme.of(context).iconTheme.color,
+            ),
           ),
           SizedBox(
             width: width / 20.55,
@@ -161,7 +177,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 borderRadius: BorderRadius.circular(15),
               ),
               margin: const EdgeInsets.all(10),
-              elevation: 4,
+              elevation: 0,
               child: SizedBox(
                 width: width,
                 child: Padding(
@@ -186,7 +202,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 borderRadius: BorderRadius.circular(15),
               ),
               margin: const EdgeInsets.all(10),
-              elevation: 4,
+              elevation: 0,
               child: SizedBox(
                 width: width,
                 child: Padding(

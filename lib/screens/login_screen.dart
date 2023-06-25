@@ -57,9 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      child: SingleChildScrollView(
+    return Scaffold(
+      // color: Colors.white,
+      body: SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Column(
@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 "Welcome",
                 screenHeight / 29.233,
                 null,
-                Colors.black,
+                Theme.of(context).textTheme.headlineLarge?.color,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
@@ -86,6 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         hintText: "Enter email",
                         labelText: "Email",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         prefixIcon: Icon(
                           Icons.person_outline,
                           size: screenHeight / 29.2333,
@@ -113,6 +116,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                           hintText: "Enter password",
                           labelText: "Password",
+
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                           prefixIcon: Icon(
                             Icons.lock_outline,
                             size: screenHeight / 29.2333,
@@ -157,16 +164,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: screenHeight / 87.7,
                     ),
                     TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SignUpScreen()));
-                        },
-                        child: const Text(
-                          "Don't have an account? Register here.",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ))
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignUpScreen()));
+                      },
+                      child: Text(
+                        "Don't have an account? Register here.",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:notes_application/app_widgets/text_widgets/heading_text.dart';
 import 'package:notes_application/app_widgets/text_widgets/normal_text.dart';
 import 'package:notes_application/global/dimensions.dart';
+
 // import 'package:notes_application/models/product_class.dart';
 import 'package:notes_application/screens/product_detail_screen.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ListItem extends StatelessWidget {
   final Map<String, dynamic> map;
+
   ListItem({super.key, required this.map});
+
   // void moveToProductScreen() {
   //   Navigator.push(context,
   //       MaterialPageRoute(builder: ((context) => ProductScreen(_product))));
@@ -35,18 +38,18 @@ class ListItem extends StatelessWidget {
               width: screenWidth / 3.425,
               height: screenWidth / 3.425,
               decoration: BoxDecoration(
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromARGB(108, 93, 93, 93),
-                    offset: Offset(1, 5),
-                    blurRadius: 4,
-                  )
-                ],
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Theme.of(context).shadowColor,
+                //     offset: const Offset(1, 5),
+                //     blurRadius: 4,
+                //   )
+                // ],
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(screenHeight / 43.85),
                   bottomLeft: Radius.circular(screenHeight / 43.85),
                 ),
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.only(
@@ -65,14 +68,14 @@ class ListItem extends StatelessWidget {
                     topRight: Radius.circular(screenHeight / 43.85),
                     bottomRight: Radius.circular(screenHeight / 43.85),
                   ),
-                  color: Colors.white,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color.fromARGB(108, 93, 93, 93),
-                      offset: Offset(1, 5),
-                      blurRadius: 4,
-                    )
-                  ],
+                  color: Theme.of(context).cardColor,
+                  // boxShadow: [
+                  //   BoxShadow(
+                  //     color: Theme.of(context).shadowColor,
+                  //     offset: const Offset(1, 5),
+                  //     blurRadius: 4,
+                  //   )
+                  // ],
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(screenHeight / 87.7),
@@ -81,9 +84,13 @@ class ListItem extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          HeadingText(map['name'], 15, TextOverflow.ellipsis,
-                              Colors.black),
-                          SizedBox(
+                          HeadingText(
+                            map['name'],
+                            15,
+                            TextOverflow.ellipsis,
+                            Theme.of(context).textTheme.headlineLarge?.color,
+                          ),
+                          const SizedBox(
                             width: 4,
                           ),
                           Icon(
@@ -118,9 +125,9 @@ class ListItem extends StatelessWidget {
                       ),
                       Text(
                         "\u{20B9}${map['pricePerHour']} / hr",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18,
-                          color: Colors.black,
+                          color: Theme.of(context).textTheme.headlineLarge?.color,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -134,9 +141,9 @@ class ListItem extends StatelessWidget {
       ),
     );
   }
-  // State<ListItem> createState() {
-  //   return _ListItemState(_product);
-  // }
+// State<ListItem> createState() {
+//   return _ListItemState(_product);
+// }
 }
 
 // class _ListItemState extends State<ListItem> {
@@ -149,5 +156,5 @@ class ListItem extends StatelessWidget {
 //   }
 
 //   @override
-  
+
 // }

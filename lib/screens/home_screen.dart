@@ -11,7 +11,6 @@ import 'package:notes_application/app_widgets/home_widgets/home_header.dart';
 import 'package:notes_application/global/dimensions.dart';
 import 'package:notes_application/screens/profile_screen.dart';
 import 'package:notes_application/screens/search_screen.dart';
-
 import '../app_widgets/text_widgets/heading_text.dart';
 
 List<Map<String, dynamic>> products = [];
@@ -52,7 +51,7 @@ class HomeScreen extends StatelessWidget {
           height: Dimensions.screenHeight / 15.17,
           width: Dimensions.screenHeight / 15.17,
           decoration: BoxDecoration(
-            color: Colors.cyan,
+            color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
             borderRadius:
                 BorderRadius.circular(Dimensions.screenHeight / 11.17),
           ),
@@ -66,13 +65,9 @@ class HomeScreen extends StatelessWidget {
         children: [
           Container(
             height: screenHeight / 8.5,
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(108, 93, 93, 93),
-                offset: Offset(0, screenHeight / 296),
-                blurRadius: 4,
-              )
-            ], color: Colors.white),
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+            ),
             child: Padding(
               padding: EdgeInsets.only(
                   left: screenWidth / 45,
@@ -94,8 +89,8 @@ class HomeScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         gradient: RadialGradient(
                           colors: [
-                            Colors.cyan.shade600,
-                            Colors.cyan.shade200,
+                            Theme.of(context).colorScheme.primary,
+                            Theme.of(context).colorScheme.secondary,
                           ],
                         ),
                         borderRadius: BorderRadius.circular(screenWidth / 80),
@@ -124,9 +119,10 @@ class HomeScreen extends StatelessWidget {
                               TextOverflow.fade,
                               Colors.black,
                             );
-                          }
-                          else if(snapshot.hasError) {
-                            Fluttertoast.showToast(msg: 'Error occurred in loading region please restart app');
+                          } else if (snapshot.hasError) {
+                            Fluttertoast.showToast(
+                                msg:
+                                    'Error occurred in loading region please restart app');
                             return const HeadingText(
                               'Error occurred in loading region',
                               20,
@@ -152,8 +148,8 @@ class HomeScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         gradient: RadialGradient(
                           colors: [
-                            Colors.cyan.shade600,
-                            Colors.cyan.shade200,
+                            Theme.of(context).colorScheme.primary,
+                            Theme.of(context).colorScheme.secondary,
                           ],
                         ),
                         borderRadius: BorderRadius.circular(screenWidth / 80),
@@ -171,17 +167,21 @@ class HomeScreen extends StatelessWidget {
           ),
           Expanded(
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
                   Container(
                     padding: const EdgeInsets.only(top: 10),
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                        color: const Color.fromARGB(108, 93, 93, 93),
-                        offset: Offset(0, screenHeight / 296),
-                        blurRadius: 4,
-                      ),
-                    ], color: Colors.white70),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color.fromARGB(108, 93, 93, 93),
+                          offset: Offset(0, screenHeight / 296),
+                          blurRadius: 4,
+                        ),
+                      ],
+                      color: Colors.white70,
+                    ),
                     height: screenHeight / 2.95,
                     child: TopItem(map: topProducts),
                   ),

@@ -24,6 +24,7 @@ class _RegionState extends State<Region> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
+        // await getCurrentLocation();
         await showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -32,8 +33,8 @@ class _RegionState extends State<Region> {
                 bottom: 10,
               ),
               icon: const Icon(Icons.location_city_rounded),
-              title: const HeadingText(
-                  'Select your region', 20, TextOverflow.fade, Colors.black),
+              title: HeadingText(
+                  'Select your region', 20, TextOverflow.fade, Theme.of(context).textTheme.headlineLarge?.color,),
               scrollable: true,
               contentPadding: const EdgeInsets.symmetric(horizontal: 20),
               shape: RoundedRectangleBorder(
@@ -46,16 +47,16 @@ class _RegionState extends State<Region> {
                       countryValue = value;
                     },
                     onStateChanged: (value) {
-                      if(value != null) {
+                      if (value != null) {
                         stateValue = value;
                       }
                     },
                     onCityChanged: (value) {
-                      if(value != null) {
+                      if (value != null) {
                         cityValue = value;
                       }
                     },
-                  )
+                  ),
                 ],
               ),
               actions: [
@@ -87,16 +88,18 @@ class _RegionState extends State<Region> {
           },
           barrierDismissible: false,
         );
+        setState(() {});
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "$stateValue,$countryValue",
+            '$stateValue,$countryValue',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: screenHeight / 60,
+              fontSize: screenHeight / 65,
+              // overflow: TextOverflow.ellipsis,
             ),
           ),
           Row(
@@ -112,7 +115,7 @@ class _RegionState extends State<Region> {
                 size: screenHeight / 45,
               )
             ],
-          )
+          ),
         ],
       ),
     );
