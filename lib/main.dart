@@ -20,8 +20,12 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await Firebase.initializeApp();
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(prefs),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ThemeProvider(prefs),
+        ),
+      ],
       child: const MyApp(),
     ),
   );
@@ -32,19 +36,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print('build');
+    // final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     currentFirebaseUser = fAuth.currentUser;
     Dimensions.screenHeight = MediaQuery.of(context).size.height;
     Dimensions.screenWidth = MediaQuery.of(context).size.width;
     return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, _) {
+      builder: (context, value, _) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme,
           darkTheme: darkTheme,
-          themeMode: themeProvider.currentThemeMode == ThemeModeType.light
+          themeMode: value.currentThemeMode == ThemeModeType.light
               ? ThemeMode.light
               : ThemeMode.dark,
-          home: (currentFirebaseUser == null) ? const LoginScreen() : const HomeScreen(),
+          home: (currentFirebaseUser == null)
+              ? const LoginScreen()
+              : const HomeScreen(),
         );
       },
     );

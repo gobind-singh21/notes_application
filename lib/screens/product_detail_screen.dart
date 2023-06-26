@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notes_application/global/dimensions.dart';
-import 'package:notes_application/app_widgets/button.dart';
 import 'package:notes_application/app_widgets/unordered_list.dart';
 import 'package:notes_application/screens/search_screen.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:readmore/readmore.dart';
 import 'package:notes_application/global/global.dart';
+
+import '../app_widgets/text_widgets/heading_text.dart';
 
 class ProductScreen extends StatefulWidget {
   final Map<String, dynamic> map;
@@ -76,7 +77,17 @@ class _ProductScreenState extends State<ProductScreen> {
     return Scaffold(
       floatingActionButton: InkWell(
         onTap: () => placeOrder(),
-        child: MyButton('Order', height / 20, height / 10, 10),
+        child: Container(
+          height: width / 10,
+          width: height / 10,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
+            // color: Colors.blueAccent,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: HeadingText('Order', width / 25, null, Theme.of(context).textTheme.headlineLarge?.color),
+        ),
       ),
       appBar: AppBar(
         // backgroundColor: Colors.cyan,

@@ -26,7 +26,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            Provider.of<ThemeProvider>(context, listen: false).toggleThemeMode();
+            Provider.of<ThemeProvider>(context, listen: false)
+                .toggleThemeMode();
           },
           child: const Text('Toggle Theme'),
         ),

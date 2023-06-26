@@ -5,7 +5,7 @@ class MyButton extends StatelessWidget {
   final String _buttonText;
   final double _height, _width, _borderRadius;
   const MyButton(
-      this._buttonText, this._height, this._width, this._borderRadius);
+      this._buttonText, this._height, this._width, this._borderRadius, {super.key});
 
   @override
   Widget build(BuildContext context) {

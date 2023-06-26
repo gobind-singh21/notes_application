@@ -130,7 +130,18 @@ class HomeScreen extends StatelessWidget {
                               Colors.black,
                             );
                           }
-                          return const Region();
+                          return TweenAnimationBuilder(
+                            duration: const Duration(milliseconds: 1000),
+                            tween: Tween<double>(begin: 0, end: 1),
+                            builder: (BuildContext context, double value,
+                                Widget? child) {
+                              return Opacity(
+                                opacity: value,
+                                child: child,
+                              );
+                            },
+                            child: const Region(),
+                          );
                         },
                       ),
                     ),
