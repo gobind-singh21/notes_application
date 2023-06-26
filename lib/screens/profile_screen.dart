@@ -3,72 +3,105 @@ import 'package:notes_application/app_widgets/profile_widgets/profile_header.dar
 import 'package:notes_application/app_widgets/profile_widgets/profile_items.dart';
 import 'package:notes_application/utils/auth.dart';
 import 'package:notes_application/screens/login_screen.dart';
-import 'package:notes_application/models/user_class.dart';
 import 'package:notes_application/screens/profile_screens/edit_profile_screen.dart';
 import 'package:notes_application/screens/profile_screens/settings_screen.dart';
+import 'package:notes_application/global/current_user_data.dart';
 
-class ProfileScreen extends StatefulWidget {
-  final EndUser _user;
-  const ProfileScreen(this._user, {super.key});
+class ProfileScreen extends StatelessWidget {
+  ProfileScreen({Key? key}) : super(key: key);
 
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState(_user);
-}
+  final String name = UserData.name;
+  final String email = UserData.email;
+  final String number = UserData.number;
+  final String profileImageURL = UserData.profileImageURL;
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  String errorMessage = "";
-  final EndUser _user;
-  _ProfileScreenState(this._user);
-
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
     await Auth().signOut();
-    Navigator.popUntil(context, ModalRoute.withName('/anything'));
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+        ModalRoute.withName('/always'));
+    // Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Column(
-        children: [
-          ProfileHeader(
-            _user.getName(),
-            _user.getEmail(),
-            _user.getProfileImage(),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.chevron_left_rounded,
+            size: 35,
+            color: Theme.of(context).iconTheme.color,
           ),
-          InkWell(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => EditProfileScreen()),
-            ),
-            child: ProfileItem(
-              const Icon(Icons.person_outline),
-              'Account',
-            ),
-          ),
-          InkWell(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SettingsScreen()),
-            ),
-            child: ProfileItem(
-              const Icon(Icons.settings_outlined),
-              'Settings',
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              Auth().signOut();
-              Navigator.popUntil(context, ModalRoute.withName('/someRoute'));
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()));
-            },
-            child: ProfileItem(const Icon(Icons.logout_outlined), 'Log out'),
-          )
-        ],
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
       ),
-    ));
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              ProfileHeader(),
+              const SizedBox(
+                height: 20,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const EditProfileScreen(),
+                    ),
+                  );
+                },
+                child: ProfileItem(
+                  const Icon(
+                    Icons.person_outline,
+                    // color: Colors.black,
+                  ),
+                  'Account',
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                  );
+                },
+                child: ProfileItem(
+                  const Icon(
+                    Icons.settings_outlined,
+                    // color: Colors.black,
+                  ),
+                  'Settings',
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              InkWell(
+                onTap: () {
+                  signOut(context);
+                },
+                child: ProfileItem(
+                    const Icon(
+                      Icons.logout_outlined,
+                      // color: Colors.black,
+                    ),
+                    'Log out'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

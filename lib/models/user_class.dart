@@ -1,49 +1,65 @@
-class EndUser {
-  final String _name;
-  // final int _age;
-  final String _email;
-  final String _phoneNumber;
-  final List<Borrowed>? _history;
-  String _profileImageUrl;
+// class EndUser {
+//   String _name;
+//   // final int _age;
+//   String _email;
+//   String _phoneNumber;
+//   List<Borrowed>? _history;
+//   String _profileImageUrl;
 
-  EndUser(
-    this._name,
-    // this._age,
-    this._email,
-    this._phoneNumber,
-    this._profileImageUrl,
-    this._history,
-  );
+//   EndUser(
+//     this._name,
+//     // this._age,
+//     this._email,
+//     this._phoneNumber,
+//     this._profileImageUrl,
+//     this._history,
+//   );
 
-  String getName() {
-    return _name;
-  }
+//   String getName() {
+//     return _name;
+//   }
 
-  String getEmail() {
-    return _email;
-  }
+//   String getEmail() {
+//     return _email;
+//   }
 
-  String getNumber() {
-    return _phoneNumber;
-  }
+//   String getNumber() {
+//     return _phoneNumber;
+//   }
 
-  String getProfileImage() {
-    return _profileImageUrl;
-  }
+//   String getProfileImage() {
+//     return _profileImageUrl;
+//   }
 
-  List<Borrowed>? getHistory() {
-    return _history;
-  }
-}
+//   List<Borrowed>? getHistory() {
+//     return _history;
+//   }
 
-class Borrowed {
-  final String _onwerID;
-  final String _productID;
-  final int _numberOfDays;
-  final int _ratingGiven;
-  final int _price;
-  final String _reviewGiven;
+//   void setName(String name) {
+//     _name = name;
+//   }
 
-  Borrowed(this._onwerID, this._productID, this._numberOfDays,
-      this._ratingGiven, this._price, this._reviewGiven);
-}
+//   void setEmail(String email) {
+//     _email = email;
+//   }
+
+//   void setNumber(String number) {
+//     _phoneNumber = number;
+//   }
+
+//   void setProfileImageUrl(String url) {
+//     _profileImageUrl = url;
+//   }
+// }
+
+// class Borrowed {
+//   final String _onwerID;
+//   final String _productID;
+//   final int _numberOfDays;
+//   final int _ratingGiven;
+//   final int _price;
+//   final String _reviewGiven;
+
+//   Borrowed(this._onwerID, this._productID, this._numberOfDays,
+//       this._ratingGiven, this._price, this._reviewGiven);
+// }

@@ -23,9 +23,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
-    if (result == null) {
-      return;
-    }
+    if (result == null) return;
 
     pickedFile = await Cropper.cropSquareImage(File(result.files.first.path!));
 
@@ -43,6 +41,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
       return;
     }
+    AlertDialog alert = AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(),
+          Container(
+              margin: const EdgeInsets.only(left: 7),
+              child: const Text("Creating your account...")),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
     if (_formKey.currentState!.validate()) {
       await Auth().createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
@@ -145,7 +160,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     TextFormField(
                       controller: _numberController,
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
                         hintText: "Enter phone number",
                         labelText: "Phone Number",
@@ -160,8 +175,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Phone number cannot be empty";
-                        } else if (value.length < 10) {
-                          return "Password must be atleast 10 characters long";
+                        } else if (value.length != 10) {
+                          return "Inavlid phone number";
                         }
                         return null;
                       },
