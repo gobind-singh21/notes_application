@@ -9,11 +9,11 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'theme_provider.dart';
 
-Future<void> initTheme() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
-  themeMode = isDarkTheme ? ThemeMode.dark : ThemeMode.light;
-}
+// Future<void> initTheme() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   bool isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
+//   themeMode = isDarkTheme ? ThemeMode.dark : ThemeMode.light;
+// }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

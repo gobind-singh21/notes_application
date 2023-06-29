@@ -11,11 +11,13 @@ ThemeData darkTheme = ThemeData(
   ),
   fontFamily: GoogleFonts.lato().fontFamily,
   floatingActionButtonTheme: FloatingActionButtonThemeData(
-      elevation: 0.0, backgroundColor: Colors.blue.shade800),
+    elevation: 0.0,
+    backgroundColor: Colors.blue.shade800,
+  ),
   iconButtonTheme: IconButtonThemeData(
     style: ButtonStyle(
       iconColor: MaterialStateProperty.resolveWith(
-            (states) {
+        (states) {
           return Colors.white;
         },
       ),
@@ -72,9 +74,10 @@ ThemeData lightTheme = ThemeData(
   ),
   iconButtonTheme: IconButtonThemeData(
     style: ButtonStyle(
-      iconColor: MaterialStateProperty.resolveWith((states) {
-        return Colors.black;
-      },
+      iconColor: MaterialStateProperty.resolveWith(
+        (states) {
+          return Colors.black;
+        },
       ),
     ),
   ),
