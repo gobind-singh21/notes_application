@@ -13,10 +13,6 @@ import 'package:notes_application/screens/profile_screen.dart';
 import 'package:notes_application/screens/search_screen.dart';
 import '../app_widgets/text_widgets/heading_text.dart';
 
-List<Map<String, dynamic>> products = [];
-List<Map<String, dynamic>> topProducts = [];
-double screenHeight = Dimensions.screenHeight;
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -24,19 +20,30 @@ class HomeScreen extends StatelessWidget {
     await UserData.fetchData();
   }
 
-  Future getProducts() async {
-    // await UserData.fetchData();
+  Future<List<Map<String, dynamic>>> getProducts() async {
     QuerySnapshot querySnapshot = await db.collection('products').get();
-    products = querySnapshot.docs.map((doc) {
+    List<Map<String, dynamic>> products = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       data['productID'] = doc.id;
       return data;
     }).toList();
+    return products;
+  }
+
+  Future<List<Map<String, dynamic>>> getTopProducts() async {
+    QuerySnapshot querySnapshot = await db.collection('products').get();
+    List<Map<String, dynamic>> products = querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      data['productID'] = doc.id;
+      return data;
+    }).toList();
+    List<Map<String, dynamic>> topProducts = [];
     for (var prod in products) {
       if (prod['top']) {
         topProducts.add(prod);
       }
     }
+    return topProducts;
   }
 
   @override
@@ -48,12 +55,12 @@ class HomeScreen extends StatelessWidget {
               MaterialPageRoute(builder: (context) => const HistoryScreen()));
         },
         child: Container(
-          height: Dimensions.screenHeight / 15.17,
-          width: Dimensions.screenHeight / 15.17,
+          height: MediaQuery.of(context).size.height / 15.17,
+          width: MediaQuery.of(context).size.height / 15.17,
           decoration: BoxDecoration(
             color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
-            borderRadius:
-                BorderRadius.circular(Dimensions.screenHeight / 11.17),
+            borderRadius: BorderRadius.circular(
+                MediaQuery.of(context).size.height / 11.17),
           ),
           child: Icon(
             Icons.history,
@@ -64,16 +71,16 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            height: screenHeight / 8.5,
+            height: MediaQuery.of(context).size.height / 8.5,
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
             ),
             child: Padding(
               padding: EdgeInsets.only(
                   left: screenWidth / 45,
-                  top: screenHeight / 23,
+                  top: MediaQuery.of(context).size.height / 23,
                   right: screenWidth / 45,
-                  bottom: screenHeight / 120),
+                  bottom: MediaQuery.of(context).size.height / 120),
               child: Row(
                 children: [
                   InkWell(
@@ -84,8 +91,8 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     child: Container(
-                      height: screenHeight / 20,
-                      width: screenHeight / 20,
+                      height: MediaQuery.of(context).size.height / 20,
+                      width: MediaQuery.of(context).size.height / 20,
                       decoration: BoxDecoration(
                         gradient: RadialGradient(
                           colors: [
@@ -97,7 +104,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       child: Icon(
                         Icons.person,
-                        size: screenHeight / 40,
+                        size: MediaQuery.of(context).size.height / 40,
                         // color: Colors.white,
                       ),
                     ),
@@ -154,8 +161,8 @@ class HomeScreen extends StatelessWidget {
                               builder: (context) => const SearchScreen()));
                     },
                     child: Container(
-                      height: screenHeight / 20,
-                      width: screenHeight / 20,
+                      height: MediaQuery.of(context).size.height / 20,
+                      width: MediaQuery.of(context).size.height / 20,
                       decoration: BoxDecoration(
                         gradient: RadialGradient(
                           colors: [
@@ -167,7 +174,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       child: Icon(
                         Icons.search,
-                        size: screenHeight / 40,
+                        size: MediaQuery.of(context).size.height / 40,
                         // color: Colors.white,
                       ),
                     ),
@@ -181,20 +188,48 @@ class HomeScreen extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.only(top: 10),
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color.fromARGB(108, 93, 93, 93),
-                          offset: Offset(0, screenHeight / 296),
-                          blurRadius: 4,
-                        ),
-                      ],
-                      color: Colors.white70,
-                    ),
-                    height: screenHeight / 2.95,
-                    child: TopItem(map: topProducts),
+                  FutureBuilder(
+                    future: getTopProducts(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            "Error occured while loading data!!",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .headlineLarge!
+                                  .color,
+                              fontSize: 20,
+                            ),
+                          ),
+                        );
+                      } else {
+                        List<Map<String, dynamic>> topProducts =
+                            snapshot.data ?? [];
+                        return Container(
+                          padding: const EdgeInsets.only(top: 10),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color.fromARGB(108, 93, 93, 93),
+                                offset: Offset(0,
+                                    MediaQuery.of(context).size.height / 296),
+                                blurRadius: 4,
+                              ),
+                            ],
+                            color: Colors.white70,
+                          ),
+                          height: MediaQuery.of(context).size.height / 2.95,
+                          child: TopItem(map: topProducts),
+                        );
+                      }
+                    },
                   ),
                   FutureBuilder(
                     future: getProducts(),
@@ -221,6 +256,26 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                             ],
+                          ),
+                        );
+                      }
+                      List<Map<String, dynamic>> products = snapshot.data ?? [];
+                      if (products.isEmpty) {
+                        return Expanded(
+                          child: Center(
+                            child: Text(
+                              "No products to show right now",
+                              style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .color,
+                                fontWeight: FontWeight.bold,
+                                fontSize:
+                                    MediaQuery.of(context).size.height / 100,
+                              ),
+                              overflow: TextOverflow.fade,
+                            ),
                           ),
                         );
                       }

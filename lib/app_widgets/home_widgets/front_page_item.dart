@@ -1,5 +1,6 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
 import 'package:notes_application/global/dimensions.dart';
 // import 'package:notes_application/models/product_class.dart';
 // import 'package:notes_application/utils/dummy_data.dart';

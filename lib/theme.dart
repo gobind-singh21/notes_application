@@ -8,6 +8,7 @@ ThemeData darkTheme = ThemeData(
   colorScheme: ColorScheme.dark(
     primary: Colors.blue.shade700,
     secondary: Colors.blue.shade500,
+    surfaceTint: Colors.purple[900],
   ),
   fontFamily: GoogleFonts.lato().fontFamily,
   floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -38,6 +39,10 @@ ThemeData darkTheme = ThemeData(
   textTheme: const TextTheme(
     headlineLarge: TextStyle(
       color: Colors.white,
+      fontWeight: FontWeight.bold,
+    ),
+    displayLarge: TextStyle(
+      color: Colors.black,
       fontWeight: FontWeight.bold,
     ),
   ),

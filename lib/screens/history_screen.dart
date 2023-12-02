@@ -122,7 +122,7 @@ class _ReturnWidgetState extends State<ReturnWidget> {
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(height / 43.85),
                 ),
-                color: Colors.blue.shade400,
+                color: Theme.of(context).colorScheme.surfaceTint,
               ),
               child: const Text(
                 'Error occured!',
@@ -147,7 +147,7 @@ class _ReturnWidgetState extends State<ReturnWidget> {
                     borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(height / 43.85),
                     ),
-                    color: Colors.blue.shade400,
+                    color: Theme.of(context).colorScheme.surfaceTint,
                   ),
                   child: const Text(
                     'Return',
@@ -168,7 +168,7 @@ class _ReturnWidgetState extends State<ReturnWidget> {
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(height / 43.85),
                   ),
-                  color: Colors.blue.shade400,
+                  color: Theme.of(context).colorScheme.surfaceTint,
                 ),
                 child: Text(
                   "Price paid : ${orderInfo['pricePaid']}",
@@ -218,17 +218,17 @@ class HistoryScreen extends StatelessWidget {
           icon: const Icon(
             Icons.chevron_left_rounded,
             size: 35,
-            color: Colors.black,
+            // color: Colors.black,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
-        title: const HeadingText(
+        title: HeadingText(
           'History',
           20,
           null,
-          Colors.black,
+          Theme.of(context).textTheme.headlineLarge!.color,
         ),
       ),
       body: FutureBuilder(
@@ -281,18 +281,18 @@ class HistoryScreen extends StatelessWidget {
                                 width: width / 3.425,
                                 height: width / 3.425,
                                 decoration: BoxDecoration(
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Color.fromARGB(108, 93, 93, 93),
-                                      offset: Offset(1, 5),
-                                      blurRadius: 4,
-                                    ),
-                                  ],
+                                  // boxShadow: const [
+                                  //   BoxShadow(
+                                  //     color: Color.fromARGB(108, 93, 93, 93),
+                                  //     offset: Offset(1, 5),
+                                  //     blurRadius: 4,
+                                  //   ),
+                                  // ],
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(height / 43.85),
                                     bottomLeft: Radius.circular(height / 43.85),
                                   ),
-                                  color: Colors.white,
+                                  color: Theme.of(context).cardColor,
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.only(
@@ -314,14 +314,14 @@ class HistoryScreen extends StatelessWidget {
                                       bottomRight:
                                           Radius.circular(height / 43.85),
                                     ),
-                                    color: Colors.white,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Color.fromARGB(108, 93, 93, 93),
-                                        offset: Offset(1, 5),
-                                        blurRadius: 4,
-                                      )
-                                    ],
+                                    color: Theme.of(context).cardColor,
+                                    // boxShadow: const [
+                                    //   BoxShadow(
+                                    //     color: Color.fromARGB(108, 93, 93, 93),
+                                    //     offset: Offset(1, 5),
+                                    //     blurRadius: 4,
+                                    //   )
+                                    // ],
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.only(
@@ -336,10 +336,14 @@ class HistoryScreen extends StatelessWidget {
                                         Row(
                                           children: [
                                             HeadingText(
-                                                prodData['name'],
-                                                15,
-                                                TextOverflow.ellipsis,
-                                                Colors.black),
+                                              prodData['name'],
+                                              15,
+                                              TextOverflow.ellipsis,
+                                              Theme.of(context)
+                                                  .textTheme
+                                                  .headlineLarge!
+                                                  .color,
+                                            ),
                                             const SizedBox(
                                               width: 4,
                                             ),
@@ -376,9 +380,12 @@ class HistoryScreen extends StatelessWidget {
                                         ),
                                         Text(
                                           "\u{20B9}${prodData['pricePerHour']} / hr",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 17,
-                                            color: Colors.black,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .headlineLarge!
+                                                .color,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),

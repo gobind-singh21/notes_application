@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
               : ThemeMode.dark,
           home: (currentFirebaseUser == null)
               ? const LoginScreen()
-              : const HomeScreen(),
+              : HomeScreen(),
         );
       },
     );
